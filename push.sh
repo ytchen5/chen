@@ -17,7 +17,6 @@ echo "push ok"
 }
 
 if [ ! ${process_count} -eq 0 ];then
-	cd $git_home
-	PUSH
+	(cd $git_home;PUSH)
 fi
 
