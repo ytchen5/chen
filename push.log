@@ -569,3 +569,19 @@
 	Untitled.md
 
 修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+[master 5cf60be] chenyantao@cyt
+ 2 files changed, 14 insertions(+)
+ create mode 100644 Untitled.md
+###########2021-06-17-21:03:06#############
+位于分支 master
+尚未暂存以备提交的变更：
+  （使用 "git add/rm <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+	删除：     Untitled.md
+	修改：     push.log
+
+未跟踪的文件:
+  （使用 "git add <文件>..." 以包含要提交的内容）
+	"\345\206\205\345\255\230\351\207\212\346\224\276\346\241\210\344\276\213.md"
+
+修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
