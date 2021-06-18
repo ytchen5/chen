@@ -34,7 +34,7 @@
  $0 脚本名
  $* 所有参数
  $@ 所有参数
- $#  参数的个数
+ $# 参数的个数
  $$ 当前进程的PID
  $! 上一个后台进程的PID
  $? 上一个命令的返回值 0表示成功
@@ -108,7 +108,7 @@ done
 ![img](http://127.0.0.1:37840/api/images/NJxxFO8BHk2T/image.png)
 
 
- 
+
 
 ######  
 
@@ -322,9 +322,7 @@ chenyantao@cyt:~/shell/ping$ echo ${vir3=aaa}
 aaa
 chenyantao@cyt:~/shell/ping$ echo ${vir1}
 
-![img](http://127.0.0.1:37840/api/images/voDYoyblGGVI/image.png)
 
-![img](http://127.0.0.1:37840/api/images/5CnMCtdetqhx/image.png)
 
  
 
@@ -395,26 +393,23 @@ ${变量名:=新的变量值}
 变量值为空的--返回值：新变量值，是否赋值：是 
 \-------------------------------------------------------------------------------
 七 ?
- 
-
-![img](http://127.0.0.1:37840/api/images/dxdhzbadCrrg/image.png)
 
 
- 
 
- 
 
- 
 
- 
 
- 
 
- 
 
- 
 
- 
+
+
+
+
+
+
+
+
 
 ${变量名?新的变量值}
 变量没有定义--返回值：bash: vir3: ccc，是否赋值：否
