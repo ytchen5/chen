@@ -1957,3 +1957,26 @@
   （使用 "git add <文件>..." 以包含要提交的内容）
 	lib/command/
 
+[master 9e6217b] chenyantao@cyt
+ 7 files changed, 39 insertions(+)
+ rename awk.md => lib/command/awk.md (100%)
+ rename expect.md => lib/command/expect.md (100%)
+ rename grep.md => lib/command/grep.md (100%)
+ rename "partd\347\243\201\347\233\230\347\256\241\347\220\206.md" => "lib/command/partd\347\243\201\347\233\230\347\256\241\347\220\206.md" (100%)
+ rename parted.md => lib/command/parted.md (100%)
+ rename sed.md => lib/command/sed.md (100%)
+###########2021-06-19-13:22:06#############
+位于分支 master
+尚未暂存以备提交的变更：
+  （使用 "git add/rm <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+	修改：     push.log
+	删除：     xargs.md
+	删除：     xgars.md
+
+未跟踪的文件:
+  （使用 "git add <文件>..." 以包含要提交的内容）
+	lib/command/xargs-1.md
+	lib/command/xgars-2.md
+
+修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
