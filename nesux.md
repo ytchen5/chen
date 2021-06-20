@@ -149,8 +149,6 @@ docker version
 
 
 
-
-
 拉取镜像，运行nexus服务
 
 在nexusServer 服务器
@@ -158,8 +156,6 @@ docker version
 docker pull sonatype/nexus3:3.16.0
 
 docker images
-
-
 
 mkdir /opt/nexus-data
 
@@ -203,137 +199,235 @@ ss  -tan
 
 创建yum私有仓库
 
- 
-
-yum私服有三种类：
-
 
 
  
 
-创建blob存储，为其创建一个单独的存储空间，命名为yum
+yum私服有三种类型：
 
+- `hosted` : 本地存储，即同 yum 官方仓库一样提供本地私服功能
+- `proxy` : 提供代理其他仓库的类型，如我们常用的163仓库
+- `group` : 组类型，实质作用是组合多个仓库为一个地址，相当于一个透明代理。
 
+那么就来一个一个创建。
 
- 
+## 1，创建blob存储。
 
+为其创建一个单独的存储空间，命名为`yum-hub`
 
+![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120217.jpg)
 
-创建hosted类型的yum库
+## 2，创建hosted类型的yum库。
 
-Name:：定义一个名称yumDev
+ 后来才发现，其实每次创建的这个hosted类型的，并没有什么用。不过照例创建一波吧。
 
-Storage：Blob store，我们下拉选择前面创建好的专用blob：yum。
+- `Name`:：定义一个名称local-yum
+- `Storage`：Blob store，我们下拉选择前面创建好的专用blob：yum-hub。
+- `Hosted`：开发环境，我们运行重复发布，因此Delpoyment policy 我们选择Allow redeploy。这个很重要！
 
-Hosted：开发环境，我们运行重复发布，因此Delpoyment policy 我们选择Allow redeploy
+整体配置截图如下：
 
- 
+![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120352.jpg)
 
+## 3，创建一个proxy类型的yum仓库。
 
+- `Name`: proxy-163-yum
+- `Proxy`：Remote Storage: 远程仓库地址，这里填写: http://mirrors.163.com/centos/
+- `Storage`: yum-hub
 
- 
+其他的均是默认。
 
+这里就先创建一个代理163的仓库，其实还可以多创建几个，诸如阿里云的，搜狐的，等等，这个根据个人需求来定义。
 
+整体配置截图如下：
 
+![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120475.jpg)
 
+## 4，创建一个group类型的yum仓库。
 
+- `Name`：group-yum
+- `Storage`：选择专用的blob存储yum-hub。
+- `group` : 将左边可选的2个仓库，添加到右边的members下。
 
+整体配置截图如下：
 
- 
+![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120440.jpg)
 
-创建一个proxy类型的yum仓库
+这些配置完成之后，就可以使用了。
 
-Name: yumProxy
-
-Proxy：Remote Storage: 远程仓库地址，写: http://mirrors.163.com/centos
-
-Storage: yum
-
-其他设置，使用均是默认。
-
-这里就先创建一个代理163的仓库，其实还可以多创建几个，诸如阿里云，搜狐等等，这个根据个人需求来定义。
-
-
-
- 
-
-
-
-
-
-创建一个group类型的yum仓库
-
-Name：yumGroup
-
-Storage：选择专用的blob存储yum
-
-group : 将左边可选的2个仓库，添加到右边的members
-
- 
-
-
-
-
-
-可以创建多个prxoy类型的yum仓库，通过同一个group暴露给客户端使用
-
- 
-
-
-
-构建yum缓存
+## 5，构建缓存。
 
 新建一台环境干净的主机，此时需要保证这台主机能够上网，因为私服当中还没有进行初始化。
 
 先简单配置一下，将yum源指向到私服中来。
 
-#  cd /etc/yum.repos.d
+### 1，将原有的移走。
 
-# mkdir repoBackup
+```
+[root@7-3 ~]$cd /etc/yum.repos.d/
+[root@7-3 yum.repos.d]$ls
+CentOS-Base.repo  CentOS-CR.repo  CentOS-Debuginfo.repo  CentOS-fasttrack.repo  CentOS-Media.repo  CentOS-Sources.repo  CentOS-Vault.repo
+[root@7-3 yum.repos.d]$mkdir bak
+[root@7-3 yum.repos.d]$mv * bak
+mv: cannot move ‘bak’ to a subdirectory of itself, ‘bak/bak’
+[root@7-3 yum.repos.d]$ls
+bak
+```
 
-# mv *.repo  repoBackup
+### 2，创建一个新的源。
 
- 
+```
+[root@7-3 yum.repos.d]$vim nexus.repo
+```
 
-# vim nexus.repo
+添加如下内容：
 
-####################################################################
+其中的url就是私服当中创建的group的对外地址，后面的`$releasever/os/$basearch/`不要漏掉了。
 
+```
 [nexus]
-
-name=Nexus Yum Repository
-
-baseurl=http://192.168.1.107:8081/repository/yumGroup/$releasever/os/$basearch/
-
+name=Nexus Repository
+baseurl=http://192.168.106.65:8081/repository/group-yum/$releasever/os/$basearch/
 enabled=1
-
 gpgcheck=0
+```
 
-#######################################################################
+注意这还不是完整内容，我第一次构建的时候只写了这些内容，以求私服自己能够通过刚刚配置的proxy将远程的包拉下来，最后发现这种方式，死活都是无法成功的。
 
+因此，这里还应该将163的源配置添加进来。
+
+完整内容应该如下：
+
+```
+[root@7-3 yum.repos.d]$cat nexus.repo
+[nexus]
+name=Nexus Repository
+baseurl=http://192.168.106.65:8081/repository/group-yum/$releasever/os/$basearch/
+enabled=1
+gpgcheck=0
  
-
-
-
-
-
-#  yum clean all
-
-#  yum  makecache
-
-
-
-现在，我们可以从页面上看缓存包了
-
-
-
+#released updates
+[updates]
+name=CentOS-$releasever-Updates-163.com
+#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates
+baseurl=http://mirrors.163.com/centos/$releasever/updates/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7
  
-
-
-
-
-
+#additional packages that may be useful
+[extras]
+name=CentOS-$releasever-Extras-163.com
+#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras
+baseurl=http://mirrors.163.com/centos/$releasever/extras/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7
  
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever-Plus-163.com
+baseurl=http://mirrors.163.com/centos/$releasever/centosplus/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-7
+```
+
+### 3，构建缓存。
+
+现在，就可以通过makecache将远程的包拉到内部私服当中了。
+
+操作之前，就像古代变戏法一般的，依旧先去私服看一眼`group-yum`当中是否有包存在，这是一个固定流程哈。
+
+![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120558.jpg)
+
+可以看到空空如也，那么通过如下三步操作创建缓存。
+
+```
+[root@7-3 yum.repos.d]$yum clean all
+Loaded plugins: fastestmirror
+Cleaning repos: extras nexus updates
+Cleaning up everything
+Cleaning up list of fastest mirrors
+[root@7-3 yum.repos.d]$yum makecache
+Loaded plugins: fastestmirror
+extras                                                                                                                                                             | 3.4 kB  00:00:00
+nexus                                                                                                                                                              | 1.8 kB  00:00:00
+updates                                                                                                                                                            | 3.4 kB  00:00:00
+(1/12): extras/7/x86_64/prestodelta                                                                                                                                | 100 kB  00:00:00
+(2/12): extras/7/x86_64/primary_db                                                                                                                                 | 204 kB  00:00:00
+(3/12): extras/7/x86_64/other_db                                                                                                                                   | 126 kB  00:00:00
+(4/12): extras/7/x86_64/filelists_db                                                                                                                               | 604 kB  00:00:00
+(5/12): nexus/7/x86_64/group_gz                                                                                                                                    | 167 kB  00:00:00
+(6/12): nexus/7/x86_64/primary                                                                                                                                     | 2.9 MB  00:00:00
+(7/12): nexus/7/x86_64/other                                                                                                                                       | 1.6 MB  00:00:00
+(8/12): nexus/7/x86_64/filelists                                                                                                                                   | 7.1 MB  00:00:00
+(9/12): updates/7/x86_64/prestodelta                                                                                                                               | 679 kB  00:00:00
+(10/12): updates/7/x86_64/filelists_db                                                                                                                             | 3.4 MB  00:00:00
+(11/12): updates/7/x86_64/other_db                                                                                                                                 | 578 kB  00:00:00
+(12/12): updates/7/x86_64/primary_db                                                                                                                               | 6.0 MB  00:00:01
+Determining fastest mirrors
+nexus                                                                                                                                                                           9911/9911
+nexus                                                                                                                                                                           9911/9911
+nexus                                                                                                                                                                           9911/9911
+Metadata Cache Created
+ 
+[root@7-3 yum.repos.d]$yum update -y #这个过程比较长，内容比较多，不完全复制了。
+```
+
+
+
+当上边的第三步执行完成之后，此时我们可以回到刚刚那个空白的页面，看看内容是否上来了。
+
+![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120628.jpg)
+
+就是这么神奇。
+
+## 6，验证一下效果。
+
+验证的方式其实也很简单，找一台不能上网但是可以与刚刚私服通信的主机，将其yum源指向的配置好的私服，看看安装软件什么的是否可以so easy。
+
+或者是将其他的源都切断，然后yum源仅仅指向私服，看看安装是否顺利。
+
+这里采用第二种方式简单试验一下。
+
+### 1，将原有的移走。
+
+Copy
+
+```
+[root@7-2 ~]$cd /etc/yum.repos.d/[root@7-2 yum.repos.d]$lsCentOS-Base.repo  CentOS-CR.repo  CentOS-Debuginfo.repo  CentOS-fasttrack.repo  CentOS-Media.repo  CentOS-Sources.repo  CentOS-Vault.repo[root@7-2 yum.repos.d]$mkdir bak[root@7-2 yum.repos.d]$mv * bakmv: cannot move ‘bak’ to a subdirectory of itself, ‘bak/bak’[root@7-2 yum.repos.d]$lsbak
+```
+
+此时尝试一下安装。
+
+Copy
+
+```
+[root@7-2 yum.repos.d]$yum -y install httpd Loaded plugins: fastestmirror Determining fastest mirrorsThere are no enabled repos. Run "yum repolist all" to see the repos you have. To enable Red Hat Subscription Management repositories:     subscription-manager repos --enable <repo> To enable custom repositories:     yum-config-manager --enable <repo>
+```
+
+### 2，创建一个新的源。
+
+Copy
+
+```
+[root@7-2 yum.repos.d]$cat nexus.repo[nexus]name=Nexus Repositorybaseurl=http://192.168.106.65:8081/repository/group-yum/$releasever/os/$basearch/enabled=1gpgcheck=0
+```
+
+再尝试安装：
+
+Copy
+
+```
+[root@7-2 yum.repos.d]$yum -y install httpdLoaded plugins: fastestmirrornexus                                                                                                                                                              | 1.8 kB  00:00:00(1/2): nexus/7/x86_64/group_gz                                                                                                                                     | 167 kB  00:00:00(2/2): nexus/7/x86_64/primary                                                                                                                                      | 2.9 MB  00:00:00Loading mirror speeds from cached hostfilenexus                                                                                                                                                                           9911/9911Resolving Dependencies--> Running transaction check---> Package httpd.x86_64 0:2.4.6-80.el7.centos will be installed--> Processing Dependency: httpd-tools = 2.4.6-80.el7.centos for package: httpd-2.4.6-80.el7.centos.x86_64--> Processing Dependency: /etc/mime.types for package: httpd-2.4.6-80.el7.centos.x86_64--> Processing Dependency: libaprutil-1.so.0()(64bit) for package: httpd-2.4.6-80.el7.centos.x86_64--> Processing Dependency: libapr-1.so.0()(64bit) for package: httpd-2.4.6-80.el7.centos.x86_64--> Running transaction check---> Package apr.x86_64 0:1.4.8-3.el7_4.1 will be installed---> Package apr-util.x86_64 0:1.5.2-6.el7 will be installed---> Package httpd-tools.x86_64 0:2.4.6-80.el7.centos will be installed---> Package mailcap.noarch 0:2.1.41-2.el7 will be installed--> Finished Dependency Resolution Dependencies Resolved ========================================================================================================================================================================================== Package                                      Arch                                    Version                                                Repository                              Size==========================================================================================================================================================================================Installing: httpd                                        x86_64                                  2.4.6-80.el7.centos                                    nexus                                  2.7 MInstalling for dependencies: apr                                          x86_64                                  1.4.8-3.el7_4.1                                        nexus                                  103 k apr-util                                     x86_64                                  1.5.2-6.el7                                            nexus                                   92 k httpd-tools                                  x86_64                                  2.4.6-80.el7.centos                                    nexus                                   89 k mailcap                                      noarch                                  2.1.41-2.el7                                           nexus                                   31 k Transaction Summary==========================================================================================================================================================================================Install  1 Package (+4 Dependent packages) Total download size: 3.0 MInstalled size: 10 MDownloading packages:(1/5): apr-1.4.8-3.el7_4.1.x86_64.rpm                                                                                                                              | 103 kB  00:00:00(2/5): apr-util-1.5.2-6.el7.x86_64.rpm                                                                                                                             |  92 kB  00:00:00(3/5): httpd-tools-2.4.6-80.el7.centos.x86_64.rpm                                                                                                                  |  89 kB  00:00:00(4/5): mailcap-2.1.41-2.el7.noarch.rpm                                                                                                                             |  31 kB  00:00:00(5/5): httpd-2.4.6-80.el7.centos.x86_64.rpm                                                                                                                        | 2.7 MB  00:00:03------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------Total                                                                                                                                                     880 kB/s | 3.0 MB  00:00:03Running transaction checkRunning transaction testTransaction test succeededRunning transaction  Installing : apr-1.4.8-3.el7_4.1.x86_64                                                                                                                                             1/5  Installing : apr-util-1.5.2-6.el7.x86_64                                                                                                                                            2/5  Installing : httpd-tools-2.4.6-80.el7.centos.x86_64                                                                                                                                 3/5  Installing : mailcap-2.1.41-2.el7.noarch                                                                                                                                            4/5  Installing : httpd-2.4.6-80.el7.centos.x86_64                                                                                                                                       5/5  Verifying  : httpd-tools-2.4.6-80.el7.centos.x86_64                                                                                                                                 1/5  Verifying  : apr-1.4.8-3.el7_4.1.x86_64                                                                                                                                             2/5  Verifying  : mailcap-2.1.41-2.el7.noarch                                                                                                                                            3/5  Verifying  : httpd-2.4.6-80.el7.centos.x86_64                                                                                                                                       4/5  Verifying  : apr-util-1.5.2-6.el7.x86_64                                                                                                                                            5/5 Installed:  httpd.x86_64 0:2.4.6-80.el7.centos Dependency Installed:  apr.x86_64 0:1.4.8-3.el7_4.1              apr-util.x86_64 0:1.5.2-6.el7              httpd-tools.x86_64 0:2.4.6-80.el7.centos              mailcap.noarch 0:2.1.41-2.el7 Complete!
+```
+
+就是这个feel，爽爽爽。
+
+到此地，关于nexus3所支持的私服类型，基本上生产中常用的，都一一介绍过了，到目前为止，我也没有在网上看到过任何一个写，针对nexus写一个系列的教程并分享出来的，啥也不说了，乡亲们呐，我心情激动，我骄傲！！！
+
+ 6，验证一下效果。
+
+# 
 
 服务端启动方式改进，将nexus注册成系统服务
 
@@ -418,45 +512,6 @@ WantedBy=multi-user.target
 
 
  
-
-四、测试nexus的yum私服
-
-
-在yumClient服务器
-
-用一台不能上网但是可以与刚刚私服通信的主机，将其yum源指向的配置好的私服，或者是将其他的源都切断，然后yum源仅仅指向私服，看看安装是否顺利。
-
-#  cd /etc/yum.repos.d
-
-# mkdir repoBackup
-
-# mv *.repo  repoBackup
-
-# vim nexus.repo
-
-####################################################################
-
-[nexus]
-
-name=Nexus Yum Repository
-
-baseurl=http://192.168.1.107:8081/repository/yumGroup//$releasever/os/$basearch/
-
-enabled=1
-
-gpgcheck=0
-
-#######################################################################
-
-
-
-#  yum clean all
-
-# yumrepolist 
-
-#  yum  -y  install  httpd
-
-
 
 
 
