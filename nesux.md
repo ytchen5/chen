@@ -198,7 +198,123 @@ ss  -tan
 
 ### 基于linux系统部署
 
+1.环境说明
+安装环境：
 
+操作系统：centos7 64位。
+JDK：jdk1.8 64位
+nexus：nexus3.0.0
+2 安装jdk
+nexus3.x需要JDK1.8支持，所以我们首先在Linux下面安装JDK1.8.
+JDK下载地址：http://www.oracle.com/technetwork/cn/java/javase/downloads/jdk7-downloads-1880260.html
+
+第一步：将下载的包解压到自己的安装目录
+
+tar -xzf  jdk-8u74-linux-x64.tar
+1
+第二步：配置系统环境变量
+使用vi编辑/etc/profile文件：
+
+vi  /etc/profile
+1
+将下面的代码添加到profile文件末尾：
+
+export JAVA_HOME=/opt/program/jdk1.8.0_74
+export JRE_HOME=$JAVA_HOME/jre
+export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
+export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+1
+2
+3
+4
+然后保存退出：wq
+生效profile文件，命令如下：
+
+source /etc/profile
+1
+第三步：验证
+输入java -version命令，如果得到如下信息表示安装成功：
+
+
+3.安装nexus
+nexus下载地址：http://www.sonatype.com/download-oss-sonatype
+
+第一步：将下载的文件放到安装目录下，解压
+tar -xzf nexus-3.0.0-03-unix.tar
+
+第二步：启动nexus
+进入bin目录，运行如下命令启动（&符号表示后台启动）：
+
+./nexus run &
+1
+然后通过打印的日志就可以产看是否启动成功。
+
+
+第三步：访问私服
+nexus启动成功之后，我们就可以访问咱们的私服了。默认的端口是8081， RUL为：http://serveripaddress:port ，e.g. http://localhost:8081/。
+
+可以看到，已经可以访问了：
+
+
+
+当然你也可以使用默认账号admin/admin123登录。
+
+OK，到这里一个maven私服就搭建好了！
+
+
+
+
+
+
+
+
+安装Nexus
+
+这里我使用CentOS7作为YUM Repository代理服务器
+
+```ps
+# java -version
+openjdk version "1.8.0_161"
+OpenJDK Runtime Environment (build 1.8.0_161-b14)
+OpenJDK 64-Bit Server VM (build 25.161-b14, mixed mode)
+
+# 创建nexus用户，并设置该用户File Handle Limits
+# useradd nexus
+# echo "nexus - nofile 65536" >> /etc/security/limits.conf
+
+# 下载并解压nexus到/opt目录，并设置nexus用户权限
+# wget https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+# tar -xzvf latest-unix.tar.gz -C /opt
+# mv /opt/nexus* /opt/nexus
+# chown -R nexus:nexus /opt/nexus /opt/sonatype-work/
+
+# 设置服务启动用户
+# echo 'run_as_user="nexus"' > /opt/nexus/bin/nexus.rc
+
+# 这里使用systemd管理服务
+# cat <<EOF >/etc/systemd/system/nexus.service
+[Unit]
+Description=nexus service
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/opt/nexus/bin/nexus start
+ExecStop=/opt/nexus/bin/nexus stop
+User=nexus
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# systemctl daemon-reload
+# systemctl enable nexus.service
+# systemctl start nexus.service
+ 
+# 最后，查看log了解服务运行状态
+# tail -f /opt/sonatype-work/nexus3/log/nexus.log
+```
 
 ### 配置nesux创建仓库
 
