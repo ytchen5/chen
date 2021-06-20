@@ -477,44 +477,11 @@ http://www.eryajf.net/category/%E6%9C%AF%E4%B8%9A%E4%B8%93%E6%94%BB/%E6%9C%8D%E5
 
  
 
-Nexus OSS配置yum代理
 
-https://qgdlsj.com/nexus-oss-yum-proxy
 
  
 
-Nexus Repository Manager 3.5: Yum Proxy Support Now Available
-
-https://blog.sonatype.com/nexus-repository-manager-3.5
-
- 
-
-Nexus System Requirements
-
-https://help.sonatype.com/repomanager3/system-requirements
-
- 
-
-国内yum源列表记录
-
-http://limingming.org/index.php/2018/12/yum-repo-china
-
- 
-
-用nexus3.x 官方镜像搭建docker私有镜像仓库
-
-https://www.jianshu.com/p/86e573f18df3
-————————————————
-版权声明：本文为CSDN博主「HunterMichaelG」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
-原文链接：https://blog.csdn.net/michaelwoshi/article/details/95769219
-
-
-
-===============================================================================================
-
-
-
-
+# nexus3作为yum私服的使用
 
 Yum（全称为 Yellow dog Updater, Modified）是一个软件包管理器。Yum基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。
 
