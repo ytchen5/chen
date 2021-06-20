@@ -41,20 +41,23 @@ nexusServer： 192.168.100.188
 
 yumClient：      192.168.100.241
 
-# 三、安装nexus，创建yum私有仓库
+# 三、安装nexus
 
-**在nexusServer服务器**
+## 1、基于docker方式部署
 
-关闭selinux
+*部署nexus服务器*
 
+```
 setenforce 0
 
 sed -i 's/SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
+```
 
  
 
-安装docker
+*安装docker服务*
 
+```
 [root@nexusServer ~]# yum -y install  yum-utils device-mapper-persistent-data lvm2
 
 [root@nexusServer ~]# ll /etc/yum.repos.d/CentOS-*
@@ -81,60 +84,61 @@ sed -i 's/SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 [root@nexusServer ~]# yum list docker-ce  --showduplicates | sort  -r
 已加载插件：fastestmirror
 可安装的软件包
+
  * updates: mirrors.huaweicloud.com
-Loading mirror speeds from cached hostfile
+   Loading mirror speeds from cached hostfile
  * extras: mirrors.huaweicloud.com
-docker-ce.x86_64            3:20.10.7-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:20.10.6-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:20.10.5-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:20.10.4-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:20.10.3-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:20.10.2-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:20.10.1-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:20.10.0-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.9-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.8-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.7-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.6-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.5-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.4-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.3-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.2-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.15-3.el7                    docker-ce-stable
-docker-ce.x86_64            3:19.03.14-3.el7                    docker-ce-stable
-docker-ce.x86_64            3:19.03.1-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:19.03.13-3.el7                    docker-ce-stable
-docker-ce.x86_64            3:19.03.12-3.el7                    docker-ce-stable
-docker-ce.x86_64            3:19.03.11-3.el7                    docker-ce-stable
-docker-ce.x86_64            3:19.03.10-3.el7                    docker-ce-stable
-docker-ce.x86_64            3:19.03.0-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.9-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.8-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.7-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.6-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.5-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.4-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.3-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.2-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.1-3.el7                     docker-ce-stable
-docker-ce.x86_64            3:18.09.0-3.el7                     docker-ce-stable
-docker-ce.x86_64            18.06.3.ce-3.el7                    docker-ce-stable
-docker-ce.x86_64            18.06.2.ce-3.el7                    docker-ce-stable
-docker-ce.x86_64            18.06.1.ce-3.el7                    docker-ce-stable
-docker-ce.x86_64            18.06.0.ce-3.el7                    docker-ce-stable
-docker-ce.x86_64            18.03.1.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            18.03.0.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.12.1.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.12.0.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.09.1.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.09.0.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.06.2.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.06.1.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.06.0.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.03.3.ce-1.el7                    docker-ce-stable
-docker-ce.x86_64            17.03.2.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.03.1.ce-1.el7.centos             docker-ce-stable
-docker-ce.x86_64            17.03.0.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            3:20.10.7-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:20.10.6-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:20.10.5-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:20.10.4-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:20.10.3-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:20.10.2-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:20.10.1-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:20.10.0-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.9-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.8-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.7-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.6-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.5-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.4-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.3-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.2-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.15-3.el7                    docker-ce-stable
+   docker-ce.x86_64            3:19.03.14-3.el7                    docker-ce-stable
+   docker-ce.x86_64            3:19.03.1-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:19.03.13-3.el7                    docker-ce-stable
+   docker-ce.x86_64            3:19.03.12-3.el7                    docker-ce-stable
+   docker-ce.x86_64            3:19.03.11-3.el7                    docker-ce-stable
+   docker-ce.x86_64            3:19.03.10-3.el7                    docker-ce-stable
+   docker-ce.x86_64            3:19.03.0-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.9-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.8-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.7-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.6-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.5-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.4-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.3-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.2-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.1-3.el7                     docker-ce-stable
+   docker-ce.x86_64            3:18.09.0-3.el7                     docker-ce-stable
+   docker-ce.x86_64            18.06.3.ce-3.el7                    docker-ce-stable
+   docker-ce.x86_64            18.06.2.ce-3.el7                    docker-ce-stable
+   docker-ce.x86_64            18.06.1.ce-3.el7                    docker-ce-stable
+   docker-ce.x86_64            18.06.0.ce-3.el7                    docker-ce-stable
+   docker-ce.x86_64            18.03.1.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            18.03.0.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.12.1.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.12.0.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.09.1.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.09.0.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.06.2.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.06.1.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.06.0.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.03.3.ce-1.el7                    docker-ce-stable
+   docker-ce.x86_64            17.03.2.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.03.1.ce-1.el7.centos             docker-ce-stable
+   docker-ce.x86_64            17.03.0.ce-1.el7.centos             docker-ce-stable
  * base: mirrors.huaweicloud.com
 
 yum -y install docker-ce
@@ -148,6 +152,7 @@ systemctl  enable  docker
 docker version
 
 
+```
 
 拉取镜像，运行nexus服务
 
