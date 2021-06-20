@@ -855,15 +855,6 @@ yum客户端没有附带上传rpm包的方法。官网给出的例子是使用cu
 
 有了，完美上传，哈哈。
 
-参考文章：
-https://help.sonatype.com/repomanager3/formats/yum-repositories#YumRepositories-ConfiguringYumClienthttps://blog.csdn.net/alibert/article/details/80678371
-http://www.eryajf.net/2002.html
-————————————————
-版权声明：本文为CSDN博主「wc1695040842」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
-原文链接：https://blog.csdn.net/wc1695040842/article/details/102576093
-
-
-
 
 
 
