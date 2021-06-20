@@ -81,7 +81,12 @@ sed -i 's/SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 -rw-r--r--. 1 root root 5701 2018-11-23 21:16 /etc/yum.repos.d/CentOS-Vault.repo
 -rw-r--r--. 1 root root 1919 2021-06-11 17:14 /etc/yum.repos.d/docker-ce.repo
 
+
+#--showduplicates命令的使用方法,这个参数对于我们来说十分有用。尤其是当你遇到版本不匹配兼容、软件依赖问题，就可以使用这个命令，找到你要 的软件版本**
+
+
 [root@nexusServer ~]# yum list docker-ce  --showduplicates | sort  -r
+
 已加载插件：fastestmirror
 可安装的软件包
 
@@ -151,13 +156,13 @@ systemctl  enable  docker
 
 docker version
 
-
 ```
 
-拉取镜像，运行nexus服务
+*拉取nexus镜像*
 
-在nexusServer 服务器
 
+
+```
 docker pull sonatype/nexus3:3.16.0
 
 docker images
@@ -165,54 +170,51 @@ docker images
 mkdir /opt/nexus-data
 
 chown -R  200 /opt/nexus-data
+```
 
 注：容器中nexus的默认运行用户是nexus,uid和gid为200
 
  
 
-用命令行形式运行nexus容器
+*运行nexus容器*
 
+
+
+```
 docker run -d  --name nexus  --ulimit nofile=65536:65536  -p 192.168.100.188:8081:8081 -v /opt/nexus-data:/nexus-data sonatype/nexus3:3.16.0
 
- 
-
- 
-
-
-
- 
-
 docker logs  -f  nexus
-
- 
-
-
 
 docker  ps  -a
 
 ss  -tan
 
-浏览器访问: http:192.168.100.181:8081
+停止和删除命令行启动的nexus服务
 
-**浏览器访问: http:192.168.1.107:8081**
+# docker stop nexus
+
+# docker rm nexus
+```
+
+# 基于linux系统部署
+
+
+
+
+
+***浏览器访问: http:192.168.100.181:8081***
 
 ![img](https://upload-images.jianshu.io/upload_images/12979420-1d3ba2bd061aa6b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
 
 ![img](https://upload-images.jianshu.io/upload_images/12979420-d799ad396ec08d43.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
 
-**默认登录用户名密码：admin/admin123**
-
-创建yum私有仓库
-
-
-
- 
+默认登录用户名密码：admin/admin123 
 
 yum私服有三种类型：
 
 - `hosted` : 本地存储，即同 yum 官方仓库一样提供本地私服功能
 - `proxy` : 提供代理其他仓库的类型，如我们常用的163仓库
-- `group` : 组类型，实质作用是组合多个仓库为一个地址，相当于一个透明代理。
+- `group` : 组类型，实质作用是组合多个仓库为一个地址，相当于一个透明代理**
 
 那么就来一个一个创建。
 
@@ -485,16 +487,6 @@ WantedBy=multi-user.target
 #####################################################
 
  
-
-
-
- 
-
-停止和删除命令行启动的nexus服务
-
-# docker stop nexus
-
-# docker rm nexus
 
  
 
