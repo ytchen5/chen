@@ -199,55 +199,173 @@ ss  -tan
 ### 基于linux系统部署
 
 1.环境说明
+
 安装环境：
 
-操作系统：centos7 64位。
+操作系统：CentOS Linux release 7.6.1810 (Core)
 JDK：jdk1.8 64位
 nexus：nexus3.0.0
+
 2 安装jdk
 nexus3.x需要JDK1.8支持，所以我们首先在Linux下面安装JDK1.8.
-JDK下载地址：http://www.oracle.com/technetwork/cn/java/javase/downloads/jdk7-downloads-1880260.html
+
+JDK下载地址：
+
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+（需要登录才能下载）
 
 第一步：将下载的包解压到自己的安装目录
 
-tar -xzf  jdk-8u74-linux-x64.tar
-1
+```
+[root@vm1 java]# pwd
+/java
+[root@vm1 java]# ll
+total 252932
+-rw-rw-r-- 1 chenyantao chenyantao 114063112 Jun 21 07:46 jdk-8u291-linux-x64.rpm
+-r-------- 1 chenyantao chenyantao 144935989 Jun 21 07:51 jdk-8u291-linux-x64.tar.gz
+
+[root@vm1 java]# tar xvf jdk-8u291-linux-x64.tar.gz -C /java/
+jdk1.8.0_291/
+jdk1.8.0_291/COPYRIGHT
+jdk1.8.0_291/LICENSE
+jdk1.8.0_291/README.html
+jdk1.8.0_291/THIRDPARTYLICENSEREADME.txt
+jdk1.8.0_291/bin/
+jdk1.8.0_291/bin/java-rmi.cgi
+.....
+[root@vm1 jdk1.8.0_291]# ll /java/jdk1.8.0_291/
+total 25796
+drwxr-xr-x 2 10143 10143     4096 Apr  7 15:24 bin
+-r--r--r-- 1 10143 10143     3244 Apr  7 15:23 COPYRIGHT
+drwxr-xr-x 3 10143 10143      132 Apr  7 15:23 include
+-rw-r--r-- 1 10143 10143  5228315 Mar 19 02:57 javafx-src.zip
+-rw-r--r-- 1 10143 10143      195 Apr  7 15:24 jmc.txt
+drwxr-xr-x 6 10143 10143      198 Apr  7 15:24 jre
+drwxr-xr-x 4 10143 10143       31 Apr  7 15:24 legal
+drwxr-xr-x 4 10143 10143      223 Apr  7 15:24 lib
+-r--r--r-- 1 10143 10143       44 Apr  7 15:23 LICENSE
+drwxr-xr-x 4 10143 10143       47 Apr  7 15:23 man
+-r--r--r-- 1 10143 10143      159 Apr  7 15:23 README.html
+-rw-r--r-- 1 10143 10143      486 Apr  7 15:23 release
+-rw-r--r-- 1 10143 10143 21151243 Apr  7 15:23 src.zip
+-rw-r--r-- 1 10143 10143      190 Mar 19 02:57 THIRDPARTYLICENSEREADME-JAVAFX.txt
+-r--r--r-- 1 10143 10143      190 Apr  7 15:23 THIRDPARTYLICENSEREADME.txt
+[root@vm1 jdk1.8.0_291]# 
+```
+
 第二步：配置系统环境变量
 使用vi编辑/etc/profile文件：
 
-vi  /etc/profile
-1
-将下面的代码添加到profile文件末尾：
-
-export JAVA_HOME=/opt/program/jdk1.8.0_74
-export JRE_HOME=$JAVA_HOME/jre
-export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
-export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
-1
-2
-3
-4
-然后保存退出：wq
-生效profile文件，命令如下：
+```
+cat >> /etc/profile <<EOF
+export JAVA_HOME=/java/jdk1.8.0_291/
+export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export PATH=$PATH:$JAVA_HOME/bin
+EOF
 
 source /etc/profile
-1
+```
+
+
+
 第三步：验证
 输入java -version命令，如果得到如下信息表示安装成功：
 
+```
+[root@vm1 ~]# java -version
+java version "1.8.0_291"
+Java(TM) SE Runtime Environment (build 1.8.0_291-b10)
+Java HotSpot(TM) 64-Bit Server VM (build 25.291-b10, mixed mode)
+```
+
+
 
 3.安装nexus
-nexus下载地址：http://www.sonatype.com/download-oss-sonatype
+nexus下载地址：
+
+官网：需要注册才能下载，http://www.sonatype.com/download-oss-sonatype
+
+私人网盘：
+
+https://blog.csdn.net/weixin_44953658/article/details/108663340?utm_medium=distribute.pc_relevant_download.none-task-blog-2~default~BlogCommendFromBaidu~default-21.nonecase&depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-2~default~BlogCommendFromBaidu~default-21.nonecas
 
 第一步：将下载的文件放到安装目录下，解压
-tar -xzf nexus-3.0.0-03-unix.tar
 
-第二步：启动nexus
-进入bin目录，运行如下命令启动（&符号表示后台启动）：
+```peizhi 
+[root@vm1 etc]# find /nexus/ -iname *.tar.gz -exec ls -l {} \;
+-rw-rw-r-- 1 chenyantao chenyantao 136225275 Jun 21 09:50 /nexus/nexus-3.20.1-01-unix.tar.gz
+-rw-rw-r-- 1 chenyantao chenyantao 160022971 Jun 21 09:53 /nexus/nexus-3.25.0-03-unix.tar.gz
+[root@vm1 etc]# find /nexus/ -iname *.tar.gz | xargs ls -l
+-rw-rw-r-- 1 chenyantao chenyantao 136225275 Jun 21 09:50 /nexus/nexus-3.20.1-01-unix.tar.gz
+-rw-rw-r-- 1 chenyantao chenyantao 160022971 Jun 21 09:53 /nexus/nexus-3.25.0-03-unix.tar.gz
+我们使用最新版本
 
-./nexus run &
-1
-然后通过打印的日志就可以产看是否启动成功。
+[root@vm1 etc]# find /nexus/ -iname nexus-3.25.0-03-unix.tar.gz | xargs -I ff tar xvf ff  -C /nexus/
+nexus-3.25.0-03/.install4j/9d17dc87.lprop
+nexus-3.25.0-03/.install4j/MessagesDefault
+nexus-3.25.0-03/.install4j/build.uuid
+nexus-3.25.0-03/.install4j/i4j_extf_0_17is1ik.utf8
+nexus-3.25.0-03/.install4j/i4j_extf_10_17is1ik_10358jn.png
+nexus-3.25.0-03/.install4j/i4j_extf_11_17is1ik_1gne9sv.png
+nexus-3.25.0-03/.install4j/i4j_extf_12_17is1ik_sc8j43.png
+nexus-3.25.0-03/.install4j/i4j_extf_13_17is1ik_10nxrsm.png
+nexus-3.25.0-03/.install4j/i4j_extf_14_17is1ik_yd7am4.png
+nexus-3.25.0-03/.install4j/i4j_extf_15_17is1ik_vu6hgs.png
+nexus-3.25.0-03/.install4j/i4j_extf_16_17is1ik_1g1wykh.png
+nexus-3.25.0-03/.install4j/i4j_extf_17_17is1ik_18gg8kx.png
+nexus-3.25.0-03/.install4j/i4j_extf_17_17is1ik_18gg8kx@2x.png
+nexus-3.25.0-03/.install4j/i4j_extf_18_17is1ik_11g5ail.png
+nexus-3.25.0-03/.install4j/i4j_extf_19_17is1ik_fyoktp.png
+nexus-3.25.0-03/.install4j/i4j_extf_1_17is1ik.properties
+nexus-3.25.0-03/.install4j/i4j_extf_20_17is1ik_11g5ail.png
+nexus-3.25.0-03/.install4j/i4j_extf_21_17is1ik_wtm4no.png
+nexus-3.25.0-03/.install4j/i4j_extf_2_17is1ik_dfqahl.png
+nexus-3.25.0-03/.install4j/i4j_extf_3_17is1ik_ijvpzt.png
+nexus-3.25.0-03/.install4j/i4j_extf_4_17is1ik_2foqqs.png
+nexus-3.25.0-03/.install4j/i4j_extf_5_17is1ik_iqj32.png
+nexus-3.25.0-03/.install4j/i4j_extf_6_17is1ik_1piu8ry.png
+nexus-3.25.0-03/.install4j/i4j_extf_7_17is1ik.html
+nexus-3.25.0-03/.install4j/i4j_extf_8_17is1ik_1niwaxy.ico
+nexus-3.25.0-03/.install4j/i4j_extf_9_17is1ik_1m92816.png
+nexus-3.25.0-03/.install4j/i4jparams.conf
+nexus-3.25.0-03/.install4j/i4jruntime.jar
+nexus-3.25.0-03/NOTICE.txt
+....
+
+[root@vm1 etc]# ll /nexus/nexus-3.25.0-03/
+total 76
+drwxr-xr-x  3 root root    73 Jun 21 10:02 bin
+drwxr-xr-x  2 root root    26 Jun 21 10:02 deploy
+drwxr-xr-x  7 root root   104 Jun 21 10:02 etc
+drwxr-xr-x  5 root root   206 Jun 21 10:02 lib
+-rw-r--r--  1 root root   395 Jul  8  2020 NOTICE.txt
+-rw-r--r--  1 root root 17321 Jul  8  2020 OSS-LICENSE.txt
+-rw-r--r--  1 root root 41954 Jul  8  2020 PRO-LICENSE.txt
+drwxr-xr-x  3 root root  4096 Jun 21 10:02 public
+drwxr-xr-x 21 root root  4096 Jun 21 10:02 system
+[root@vm1 etc]# 
+```
+
+*配置 nexus*
+
+创建nexus用户，并设置该用户File Handle Limits
+
+```
+[root@vm1 etc]# useradd nexus
+[root@vm1 etc]# echo "nexus - nofile 65536" >> /etc/security/limits.conf
+[root@vm1 etc]# # mv /nexus/nexus-3.25.0-03/ /nexus/nexus-3
+[root@vm1 etc]# chown -R nexus:nexus /nexus/
+# 设置服务启动用户
+[root@vm1 etc]# echo 'run_as_user="nexus"' > /nexus/nexus-3.25.0-03/bin/nexus.rc 
+
+启动nexus
+[root@vm1 log]# /nexus/nexus-3.25.0-03/bin/nexus start
+ 
+# 最后，查看log了解服务运行状态
+[root@vm1 log]# tail -1000f /nexus/sonatype-work/nexus3/log/nexus.log 
+....
+```
 
 
 第三步：访问私服
@@ -256,65 +374,6 @@ nexus启动成功之后，我们就可以访问咱们的私服了。默认的端
 可以看到，已经可以访问了：
 
 
-
-当然你也可以使用默认账号admin/admin123登录。
-
-OK，到这里一个maven私服就搭建好了！
-
-
-
-
-
-
-
-
-安装Nexus
-
-这里我使用CentOS7作为YUM Repository代理服务器
-
-```ps
-# java -version
-openjdk version "1.8.0_161"
-OpenJDK Runtime Environment (build 1.8.0_161-b14)
-OpenJDK 64-Bit Server VM (build 25.161-b14, mixed mode)
-
-# 创建nexus用户，并设置该用户File Handle Limits
-# useradd nexus
-# echo "nexus - nofile 65536" >> /etc/security/limits.conf
-
-# 下载并解压nexus到/opt目录，并设置nexus用户权限
-# wget https://download.sonatype.com/nexus/3/latest-unix.tar.gz
-# tar -xzvf latest-unix.tar.gz -C /opt
-# mv /opt/nexus* /opt/nexus
-# chown -R nexus:nexus /opt/nexus /opt/sonatype-work/
-
-# 设置服务启动用户
-# echo 'run_as_user="nexus"' > /opt/nexus/bin/nexus.rc
-
-# 这里使用systemd管理服务
-# cat <<EOF >/etc/systemd/system/nexus.service
-[Unit]
-Description=nexus service
-After=network.target
-
-[Service]
-Type=forking
-ExecStart=/opt/nexus/bin/nexus start
-ExecStop=/opt/nexus/bin/nexus stop
-User=nexus
-Restart=on-abort
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# systemctl daemon-reload
-# systemctl enable nexus.service
-# systemctl start nexus.service
- 
-# 最后，查看log了解服务运行状态
-# tail -f /opt/sonatype-work/nexus3/log/nexus.log
-```
 
 ### 配置nesux创建仓库
 
@@ -624,5 +683,4 @@ http://limingming.org/index.php/2018/12/nexus3-yum-repo
 http://www.eryajf.net/category/%E6%9C%AF%E4%B8%9A%E4%B8%93%E6%94%BB/%E6%9C%8D%E5%8A%A1%E7%B1%BB%E7%9B%B8%E5%85%B3/nexus
 
  
-
 
