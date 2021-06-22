@@ -367,13 +367,59 @@ drwxr-xr-x 21 root root  4096 Jun 21 10:02 system
 ....
 ```
 
-
 第三步：访问私服
 nexus启动成功之后，我们就可以访问咱们的私服了。默认的端口是8081， RUL为：http://serveripaddress:port ，e.g. http://localhost:8081/。
 
-可以看到，已经可以访问了：
 
 
+*如果忘记密码按照如下步骤修改密码：*
+
+此处我们将admin用户密码重置为admin123，具体执行如下：
+
+```
+1、停服务
+[root@vm1 ~]# /nexus/nexus-3.25.0-03/bin/nexus stop
+2、切换数据库
+[root@vm1 ~]# java -jar /nexus/nexus-3.25.0-03/lib/support/nexus-orient-console.jar 
+
+OrientDB console v.2.2.36 (build d3beb772c02098ceaea89779a7afd4b7305d3788, branch 2.2.x) https://www.orientdb.com
+Type 'help' to display all the supported commands.
+3、连接数据库
+orientdb> connect plocal:/nexus/sonatype-work/nexus3/db/security/ admin admin
+
+Connecting to database [plocal:/nexus/sonatype-work/nexus3/db/security/] with user 'admin'...
+2021-06-22 08:06:28:798 WARNI {db=security} Storage 'security' was not closed properly. Will try to recover from write ahead log... [OLocalPaginatedStorage]
+2021-06-22 08:06:28:802 WARNI {db=security} Record com.orientechnologies.orient.core.storage.impl.local.paginated.wal.OCheckpointEndRecord{lsn=LSN{segment=12, position=52}} will be skipped during data restore [OLocalPaginatedStorage]OK
+4、查看系统用户
+orientdb {db=security}> select * from user where id = "admin"
+
++----+-----+------+-----+------+--------+-----------+---------------+-------------------------------------------------------------------------------------------------------------+
+|#   |@RID |@CLASS|id   |status|lastName|firstName  |email          |password                                                                                                     |
++----+-----+------+-----+------+--------+-----------+---------------+-------------------------------------------------------------------------------------------------------------+
+|0   |#12:0|user  |admin|active|User    |Administ...|admin@exampl...|$shiro1$SHA-512$1024$ke/xytEvnWV90kG+E84Ukw==$pGKtjMXdNedIVGMul7vs2mpGGDEA46ED5ckQjtOFkw5ODgQQXX6oe6Ssoofb...|
++----+-----+------+-----+------+--------+-----------+---------------+-------------------------------------------------------------------------------------------------------------+
+
+1 item(s) found. Query executed in 0.005 sec(s).
+
+5、修改密码
+orientdb {db=security}> update user SET password="$shiro1$SHA-512$1024$NE+wqQq/TmjZMvfI7ENh/g==$V4yPw8T64UQ6GfJfxYq2hLsVrBY8D1v+bktfOxGdt4b/9BthpWPNUy/CBk6V9iA0nHpzYzJFWO8v/tZFtES8CA==" UPSERT WHERE id="admin"
+
+Updated record(s) '1' in 0.034000 sec(s).
+
+orientdb {db=security}> select * from user where id = "admin"                                                                                                                                                    
++----+-----+------+-----+------+--------+-----------+---------------+-------------------------------------------------------------------------------------------------------------+
+|#   |@RID |@CLASS|id   |status|lastName|firstName  |email          |password                                                                                                     |
++----+-----+------+-----+------+--------+-----------+---------------+-------------------------------------------------------------------------------------------------------------+
+|0   |#12:0|user  |admin|active|User    |Administ...|admin@exampl...|$shiro1$SHA-512$1024$NE+wqQq/TmjZMvfI7ENh/g==$V4yPw8T64UQ6GfJfxYq2hLsVrBY8D1v+bktfOxGdt4b/9BthpWPNUy/CBk6V...|
++----+-----+------+-----+------+--------+-----------+---------------+-------------------------------------------------------------------------------------------------------------+
+
+1 item(s) found. Query executed in 0.002 sec(s).
+orientdb {db=security}> quit
+
+7、启动服务
+[root@vm1 ~]# /nexus/nexus-3.25.0-03/bin/nexus start
+
+```
 
 ### 配置nesux创建仓库
 
