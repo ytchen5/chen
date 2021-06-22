@@ -443,45 +443,103 @@ yum私服有三种类型：
 
 为其创建一个单独的存储空间，命名为`yum-hub`
 
-![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120217.jpg)
+**1）Type**
+选择"File"。
 
-#### 2，创建hosted类型的yum库。
+**2）Name**
+就叫yum-blob吧。
 
- 后来才发现，其实每次创建的这个hosted类型的，并没有什么用。不过照例创建一波吧。
+**3）Enable Soft Quota**
+限制目录的大小。我这边就不限制了。如果要限制的话，就勾选上，并填上限制的条件和限制的值就OK了。
 
-- `Name`:：定义一个名称local-yum
-- `Storage`：Blob store，我们下拉选择前面创建好的专用blob：yum-hub。
-- `Hosted`：开发环境，我们运行重复发布，因此Delpoyment policy 我们选择Allow redeploy。这个很重要！
+**4）Path**
+在填入Name之后，path会自动生成。
 
-整体配置截图如下：
+![](https://img-blog.csdnimg.cn/20191015220734613.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3djMTY5NTA0MDg0Mg==,size_16,color_FFFFFF,t_70)
 
-![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120352.jpg)
+#### 2、创建一个hosted类型的仓库
+
+点击"Repository"–>“Repositories”–>“Create repository”，选择yum(hosted)。
+
+![](https://img-blog.csdnimg.cn/2019101522075311.png)
+
+1）Name
+就叫yum-hosted-my吧。
+
+2）Online
+勾选，可以设置这个仓库是在线还是离线。
+
+3）Yum
+Repodata Depth：指定创建repodata文件夹的存储库深度，这里选择"2"。
+Deploy Policy：布局策略
+Strict：严格
+Permissive：宽松
+这里选择默认的Strict。
+
+4）Storang
+Blob store：选择此仓库使用的Blob存储，这里选择之前创建的yum-blob。
+Strict Content Type Validation：验证上传内容格式，这里就用默认的勾选。
+
+5）Hosted
+Deployment Policy：部署策略，有三个选项，分别是：
+Allow Redeploy：允许重新部署
+Disable Redeploy：禁止重新部署
+Read-Only：只读
+
+我这里使用默认的"Disable Redeploy"，如果是开发环境，可以选择"Allow Redeploy"。
+
+6）Cleanup
+Cleanup Policies：清除策略，这个是新增的功能，这里先不进行设置
+
+![](https://img-blog.csdnimg.cn/20191015220808753.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3djMTY5NTA0MDg0Mg==,size_16,color_FFFFFF,t_70)
 
 #### 3，创建一个proxy类型的yum仓库。
 
-- `Name`: proxy-163-yum
-- `Proxy`：Remote Storage: 远程仓库地址，这里填写: http://mirrors.163.com/centos/
-- `Storage`: yum-hub
+代理仓库（Proxy Repository）是远程仓库的代理，当用户向这个代理仓库请求一个依赖包时，这个代理仓库会先在本地查找，如果存在，会直接提供给用户进行下载；如果在代理仓库本地查找不到，就会从配置的远程中央仓库中进行下载，下载到私服上之后再提供给用户下载。所以一般我们把私服架设在内网之中，这样可以节省外网带宽，并且大大提高了用户下载依赖的速度。
+点击"Repository"–>“Repositories”–>“Create repository”，选择yum(proxy)。
 
-其他的均是默认。
+1）Name
+因为我要代理阿里云的yum仓库，所以就叫"yum-proxy-aliyun"。
 
-这里就先创建一个代理163的仓库，其实还可以多创建几个，诸如阿里云的，搜狐的，等等，这个根据个人需求来定义。
+2）Online
+勾选，设置成在线。
 
-整体配置截图如下：
+3）Proxy
+Remote storage：设置远程中央仓库的地址，我这里设置成阿里云的yum仓库地址—http://mirrors.aliyun.com/centos/
 
-![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120475.jpg)
+其他的用默认值即可。
+
+4）Storage
+Blob store：选择yum-blob
+Strict Content Type Validation：验证上传内容格式，这里就用默认的勾选。
+
+5）Routing,Negative Cache,Cleanup,HTTP
+都使用默认配置。
+
+![](https://img-blog.csdnimg.cn/20191015220830843.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3djMTY5NTA0MDg0Mg==,size_16,color_FFFFFF,t_70)
+
+
 
 #### 4，创建一个group类型的yum仓库。
 
-- `Name`：group-yum
-- `Storage`：选择专用的blob存储yum-hub。
-- `group` : 将左边可选的2个仓库，添加到右边的members下。
+仓库组（Repository Group）的目的是将多个仓库（代理仓库和宿主仓库）聚合，对用户暴露统一的地址。当用户需要获取某一个依赖包时，请求的是仓库组的地址，系统将会根据仓库组配置的仓库顺序依次查找。
 
-整体配置截图如下：
+点击"Repository"–>“Repositories”–>“Create repository”，选择yum(gruop)。
 
-![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120440.jpg)
+1）Name
+yum-group-my
 
-这些配置完成之后，就可以使用了。
+2）Online
+勾选，设置成在线
+
+3）Storage
+Blob store：选择yum-blob
+Strict Content Type Validation：使用默认的勾选
+
+4）Group
+将左侧的Available中的仓库列表添加到右侧的Members中。
+
+![](https://img-blog.csdnimg.cn/20191015220847988.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3djMTY5NTA0MDg0Mg==,size_16,color_FFFFFF,t_70)
 
 #### 5，构建缓存。
 
@@ -605,7 +663,7 @@ Metadata Cache Created
 
 当上边的第三步执行完成之后，此时我们可以回到刚刚那个空白的页面，看看内容是否上来了。
 
-![](http://www.eryajf.net/wp-content/uploads/2018/11/2018110811120628.jpg)
+![](https://img-blog.csdnimg.cn/20191015220947702.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3djMTY5NTA0MDg0Mg==,size_16,color_FFFFFF,t_70)
 
 就是这么神奇。
 
