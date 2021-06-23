@@ -215,6 +215,8 @@ http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.h
 
 （需要登录才能下载）
 
+
+
 第一步：将下载的包解压到自己的安装目录
 
 ```
@@ -288,7 +290,18 @@ nexus下载地址：
 
 私人网盘：
 
-https://blog.csdn.net/weixin_44953658/article/details/108663340?utm_medium=distribute.pc_relevant_download.none-task-blog-2~default~BlogCommendFromBaidu~default-21.nonecase&depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-2~default~BlogCommendFromBaidu~default-21.nonecas
+链接: https://pan.baidu.com/s/1496zFST-cOHqN2ogtu57BA  密码: 5k3g
+
+推荐下载3.20.1-01版本的，我使用3.25.0-03版本的部署完毕验证失败客户端无法使用
+
+```
+[root@vm1 nexus3]# ll /nexus/nexus-3.2*.tar.gz
+-rw-rw-r-- 1 nexus nexus 136225275 Jun 21 09:50 /nexus/nexus-3.20.1-01-unix.tar.gz
+-rw-rw-r-- 1 nexus nexus 160022971 Jun 21 09:53 /nexus/nexus-3.25.0-03-unix.tar.gz
+
+```
+
+
 
 第一步：将下载的文件放到安装目录下，解压
 
