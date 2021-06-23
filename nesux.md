@@ -215,6 +215,8 @@ http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.h
 
 （需要登录才能下载）
 
+私人网盘：链接: https://pan.baidu.com/s/1IcCvfMCTHcQGWwvIAbUkAA  密码: 46lo
+
 
 
 第一步：将下载的包解压到自己的安装目录
