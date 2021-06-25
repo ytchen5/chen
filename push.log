@@ -1,290 +1,34 @@
-###########2021-06-25-19:16:06#############
+###########2021-06-25-19:19:06#############
 位于分支 master
-您的分支与上游分支 'origin/master' 一致。
-
-尚未暂存以备提交的变更：
-  （使用 "git add/rm <文件>..." 更新要提交的内容）
-  （使用 "git restore <文件>..." 丢弃工作区的改动）
-	删除：     command/awk.md
-	删除：     command/expect.md
-	删除：     command/find.md
-	删除：     command/grep.md
-	删除：     command/mount.md
-	删除：     command/partd.md
-	删除：     command/parted.md
-	删除：     command/sed.md
-	删除：     command/xargs-1.md
-	删除：     command/xgars-2.md
-	删除：     examples.desktop
-	删除：     images/algolia_logo.svg
-	删除：     images/apple-touch-icon-next.png
-	删除：     images/avatar.gif
-	删除：     images/cc-by-nc-nd.svg
-	删除：     images/cc-by-nc-sa.svg
-	删除：     images/cc-by-nc.svg
-	删除：     images/cc-by-nd.svg
-	删除：     images/cc-by-sa.svg
-	删除：     images/cc-by.svg
-	删除：     images/cc-zero.svg
-	删除：     images/favicon-16x16-next.png
-	删除：     images/favicon-32x32-next.png
-	删除：     images/loading.gif
-	删除：     images/logo.svg
-	删除：     images/placeholder.gif
-	删除：     images/quote-l.svg
-	删除：     images/quote-r.svg
-	删除：     images/searchicon.png
-	删除：     js/src/affix.js
-	删除：     js/src/algolia-search.js
-	删除：     js/src/bootstrap.js
-	删除：     js/src/exturl.js
-	删除：     js/src/hook-duoshuo.js
-	删除：     js/src/js.cookie.js
-	删除：     js/src/motion.js
-	删除：     js/src/post-details.js
-	删除：     js/src/schemes/pisces.js
-	删除：     js/src/scroll-cookie.js
-	删除：     js/src/scrollspy.js
-	删除：     js/src/utils.js
-	删除：     lib/Han/dist/font/han-space.otf
-	删除：     lib/Han/dist/font/han-space.woff
-	删除：     lib/Han/dist/font/han.otf
-	删除：     lib/Han/dist/font/han.woff
-	删除：     lib/Han/dist/font/han.woff2
-	删除：     lib/Han/dist/han.css
-	删除：     lib/Han/dist/han.js
-	删除：     lib/Han/dist/han.min.css
-	删除：     lib/Han/dist/han.min.js
-	删除：     lib/algolia-instant-search/instantsearch.min.css
-	删除：     lib/algolia-instant-search/instantsearch.min.js
-	删除：     lib/canvas-nest/canvas-nest.min.js
-	删除：     lib/canvas-ribbon/canvas-ribbon.js
-	删除：     lib/fancybox/source/blank.gif
-	删除：     lib/fancybox/source/fancybox_loading.gif
-	删除：     lib/fancybox/source/fancybox_loading@2x.gif
-	删除：     lib/fancybox/source/fancybox_overlay.png
-	删除：     lib/fancybox/source/fancybox_sprite.png
-	删除：     lib/fancybox/source/fancybox_sprite@2x.png
-	删除：     lib/fancybox/source/helpers/fancybox_buttons.png
-	删除：     lib/fancybox/source/helpers/jquery.fancybox-buttons.css
-	删除：     lib/fancybox/source/helpers/jquery.fancybox-buttons.js
-	删除：     lib/fancybox/source/helpers/jquery.fancybox-media.js
-	删除：     lib/fancybox/source/helpers/jquery.fancybox-thumbs.css
-	删除：     lib/fancybox/source/helpers/jquery.fancybox-thumbs.js
-	删除：     lib/fancybox/source/jquery.fancybox.css
-	删除：     lib/fancybox/source/jquery.fancybox.js
-	删除：     lib/fancybox/source/jquery.fancybox.pack.js
-	删除：     lib/fastclick/README.html
-	删除：     lib/fastclick/bower.json
-	删除：     lib/fastclick/lib/fastclick.js
-	删除：     lib/fastclick/lib/fastclick.min.js
-	删除：     lib/font-awesome/bower.json
-	删除：     lib/font-awesome/css/font-awesome.css
-	删除：     lib/font-awesome/css/font-awesome.css.map
-	删除：     lib/font-awesome/css/font-awesome.min.css
-	删除：     lib/font-awesome/fonts/FontAwesome.otf
-	删除：     lib/font-awesome/fonts/fontawesome-webfont.eot
-	删除：     lib/font-awesome/fonts/fontawesome-webfont.svg
-	删除：     lib/font-awesome/fonts/fontawesome-webfont.ttf
-	删除：     lib/font-awesome/fonts/fontawesome-webfont.woff
-	删除：     lib/font-awesome/fonts/fontawesome-webfont.woff2
-	删除：     lib/jquery/index.js
-	删除：     lib/jquery_lazyload/CONTRIBUTING.html
-	删除：     lib/jquery_lazyload/README.html
-	删除：     lib/jquery_lazyload/bower.json
-	删除：     lib/jquery_lazyload/jquery.lazyload.js
-	删除：     lib/jquery_lazyload/jquery.scrollstop.js
-	删除：     lib/needsharebutton/font-embedded.css
-	删除：     lib/needsharebutton/needsharebutton.css
-	删除：     lib/needsharebutton/needsharebutton.js
-	删除：     lib/pace/pace-theme-barber-shop.min.css
-	删除：     lib/pace/pace-theme-big-counter.min.css
-	删除：     lib/pace/pace-theme-bounce.min.css
-	删除：     lib/pace/pace-theme-center-atom.min.css
-	删除：     lib/pace/pace-theme-center-circle.min.css
-	删除：     lib/pace/pace-theme-center-radar.min.css
-	删除：     lib/pace/pace-theme-center-simple.min.css
-	删除：     lib/pace/pace-theme-corner-indicator.min.css
-	删除：     lib/pace/pace-theme-fill-left.min.css
-	删除：     lib/pace/pace-theme-flash.min.css
-	删除：     lib/pace/pace-theme-loading-bar.min.css
-	删除：     lib/pace/pace-theme-mac-osx.min.css
-	删除：     lib/pace/pace-theme-minimal.min.css
-	删除：     lib/pace/pace.min.js
-	删除：     lib/three/canvas_lines.min.js
-	删除：     lib/three/canvas_sphere.min.js
-	删除：     lib/three/three-waves.min.js
-	删除：     lib/three/three.min.js
-	删除：     lib/ua-parser-js/dist/ua-parser.min.js
-	删除：     lib/ua-parser-js/dist/ua-parser.pack.js
-	删除：     lib/velocity/bower.json
-	删除：     lib/velocity/velocity.js
-	删除：     lib/velocity/velocity.min.js
-	删除：     lib/velocity/velocity.ui.js
-	删除：     lib/velocity/velocity.ui.min.js
-	修改：     push.log
-
-未跟踪的文件:
-  （使用 "git add <文件>..." 以包含要提交的内容）
-	"\345\221\275\344\273\244\346\200\273\347\273\223/"
-
-修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
-[master e47b399] chenyantao@cyt
- 118 files changed, 131 insertions(+), 39389 deletions(-)
- delete mode 100644 examples.desktop
- delete mode 100644 images/algolia_logo.svg
- delete mode 100644 images/apple-touch-icon-next.png
- delete mode 100644 images/avatar.gif
- delete mode 100644 images/cc-by-nc-nd.svg
- delete mode 100644 images/cc-by-nc-sa.svg
- delete mode 100644 images/cc-by-nc.svg
- delete mode 100644 images/cc-by-nd.svg
- delete mode 100644 images/cc-by-sa.svg
- delete mode 100644 images/cc-by.svg
- delete mode 100644 images/cc-zero.svg
- delete mode 100644 images/favicon-16x16-next.png
- delete mode 100644 images/favicon-32x32-next.png
- delete mode 100644 images/loading.gif
- delete mode 100644 images/logo.svg
- delete mode 100644 images/placeholder.gif
- delete mode 100644 images/quote-l.svg
- delete mode 100644 images/quote-r.svg
- delete mode 100644 images/searchicon.png
- delete mode 100644 js/src/affix.js
- delete mode 100644 js/src/algolia-search.js
- delete mode 100644 js/src/bootstrap.js
- delete mode 100644 js/src/exturl.js
- delete mode 100644 js/src/hook-duoshuo.js
- delete mode 100644 js/src/js.cookie.js
- delete mode 100644 js/src/motion.js
- delete mode 100644 js/src/post-details.js
- delete mode 100644 js/src/schemes/pisces.js
- delete mode 100644 js/src/scroll-cookie.js
- delete mode 100644 js/src/scrollspy.js
- delete mode 100644 js/src/utils.js
- delete mode 100644 lib/Han/dist/font/han-space.otf
- delete mode 100644 lib/Han/dist/font/han-space.woff
- delete mode 100644 lib/Han/dist/font/han.otf
- delete mode 100644 lib/Han/dist/font/han.woff
- delete mode 100644 lib/Han/dist/font/han.woff2
- delete mode 100644 lib/Han/dist/han.css
- delete mode 100644 lib/Han/dist/han.js
- delete mode 100644 lib/Han/dist/han.min.css
- delete mode 100644 lib/Han/dist/han.min.js
- delete mode 100644 lib/algolia-instant-search/instantsearch.min.css
- delete mode 100644 lib/algolia-instant-search/instantsearch.min.js
- delete mode 100644 lib/canvas-nest/canvas-nest.min.js
- delete mode 100644 lib/canvas-ribbon/canvas-ribbon.js
- delete mode 100644 lib/fancybox/source/blank.gif
- delete mode 100644 lib/fancybox/source/fancybox_loading.gif
- delete mode 100644 lib/fancybox/source/fancybox_loading@2x.gif
- delete mode 100644 lib/fancybox/source/fancybox_overlay.png
- delete mode 100644 lib/fancybox/source/fancybox_sprite.png
- delete mode 100644 lib/fancybox/source/fancybox_sprite@2x.png
- delete mode 100644 lib/fancybox/source/helpers/fancybox_buttons.png
- delete mode 100644 lib/fancybox/source/helpers/jquery.fancybox-buttons.css
- delete mode 100644 lib/fancybox/source/helpers/jquery.fancybox-buttons.js
- delete mode 100644 lib/fancybox/source/helpers/jquery.fancybox-media.js
- delete mode 100644 lib/fancybox/source/helpers/jquery.fancybox-thumbs.css
- delete mode 100644 lib/fancybox/source/helpers/jquery.fancybox-thumbs.js
- delete mode 100644 lib/fancybox/source/jquery.fancybox.css
- delete mode 100644 lib/fancybox/source/jquery.fancybox.js
- delete mode 100644 lib/fancybox/source/jquery.fancybox.pack.js
- delete mode 100644 lib/fastclick/README.html
- delete mode 100644 lib/fastclick/bower.json
- delete mode 100644 lib/fastclick/lib/fastclick.js
- delete mode 100644 lib/fastclick/lib/fastclick.min.js
- delete mode 100644 lib/font-awesome/bower.json
- delete mode 100644 lib/font-awesome/css/font-awesome.css
- delete mode 100644 lib/font-awesome/css/font-awesome.css.map
- delete mode 100644 lib/font-awesome/css/font-awesome.min.css
- delete mode 100644 lib/font-awesome/fonts/FontAwesome.otf
- delete mode 100644 lib/font-awesome/fonts/fontawesome-webfont.eot
- delete mode 100644 lib/font-awesome/fonts/fontawesome-webfont.svg
- delete mode 100644 lib/font-awesome/fonts/fontawesome-webfont.ttf
- delete mode 100644 lib/font-awesome/fonts/fontawesome-webfont.woff
- delete mode 100644 lib/font-awesome/fonts/fontawesome-webfont.woff2
- delete mode 100644 lib/jquery/index.js
- delete mode 100644 lib/jquery_lazyload/CONTRIBUTING.html
- delete mode 100644 lib/jquery_lazyload/README.html
- delete mode 100644 lib/jquery_lazyload/bower.json
- delete mode 100644 lib/jquery_lazyload/jquery.lazyload.js
- delete mode 100644 lib/jquery_lazyload/jquery.scrollstop.js
- delete mode 100644 lib/needsharebutton/font-embedded.css
- delete mode 100644 lib/needsharebutton/needsharebutton.css
- delete mode 100644 lib/needsharebutton/needsharebutton.js
- delete mode 100644 lib/pace/pace-theme-barber-shop.min.css
- delete mode 100644 lib/pace/pace-theme-big-counter.min.css
- delete mode 100644 lib/pace/pace-theme-bounce.min.css
- delete mode 100644 lib/pace/pace-theme-center-atom.min.css
- delete mode 100644 lib/pace/pace-theme-center-circle.min.css
- delete mode 100644 lib/pace/pace-theme-center-radar.min.css
- delete mode 100644 lib/pace/pace-theme-center-simple.min.css
- delete mode 100644 lib/pace/pace-theme-corner-indicator.min.css
- delete mode 100644 lib/pace/pace-theme-fill-left.min.css
- delete mode 100644 lib/pace/pace-theme-flash.min.css
- delete mode 100644 lib/pace/pace-theme-loading-bar.min.css
- delete mode 100644 lib/pace/pace-theme-mac-osx.min.css
- delete mode 100644 lib/pace/pace-theme-minimal.min.css
- delete mode 100644 lib/pace/pace.min.js
- delete mode 100644 lib/three/canvas_lines.min.js
- delete mode 100644 lib/three/canvas_sphere.min.js
- delete mode 100644 lib/three/three-waves.min.js
- delete mode 100644 lib/three/three.min.js
- delete mode 100644 lib/ua-parser-js/dist/ua-parser.min.js
- delete mode 100644 lib/ua-parser-js/dist/ua-parser.pack.js
- delete mode 100644 lib/velocity/bower.json
- delete mode 100644 lib/velocity/velocity.js
- delete mode 100644 lib/velocity/velocity.min.js
- delete mode 100644 lib/velocity/velocity.ui.js
- delete mode 100644 lib/velocity/velocity.ui.min.js
- rewrite push.log (99%)
- rename command/awk.md => "\345\221\275\344\273\244\346\200\273\347\273\223/awk.md" (100%)
- rename command/expect.md => "\345\221\275\344\273\244\346\200\273\347\273\223/expect.md" (100%)
- rename command/find.md => "\345\221\275\344\273\244\346\200\273\347\273\223/find.md" (100%)
- rename command/grep.md => "\345\221\275\344\273\244\346\200\273\347\273\223/grep.md" (100%)
- rename command/mount.md => "\345\221\275\344\273\244\346\200\273\347\273\223/mount.md" (100%)
- rename command/partd.md => "\345\221\275\344\273\244\346\200\273\347\273\223/partd.md" (100%)
- rename command/parted.md => "\345\221\275\344\273\244\346\200\273\347\273\223/parted.md" (100%)
- rename command/sed.md => "\345\221\275\344\273\244\346\200\273\347\273\223/sed.md" (100%)
- rename command/xargs-1.md => "\345\221\275\344\273\244\346\200\273\347\273\223/xargs-1.md" (100%)
- rename command/xgars-2.md => "\345\221\275\344\273\244\346\200\273\347\273\223/xgars-2.md" (100%)
-###########2021-06-25-19:17:06#############
-位于分支 master
-您的分支领先 'origin/master' 共 1 个提交。
+您的分支领先 'origin/master' 共 3 个提交。
   （使用 "git push" 来发布您的本地提交）
 
 尚未暂存以备提交的变更：
   （使用 "git add/rm <文件>..." 更新要提交的内容）
   （使用 "git restore <文件>..." 丢弃工作区的改动）
-	删除：     index.html
-	删除：     nexus/nesux.pdf
 	修改：     push.log
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/echo\346\211\223\345\215\260\351\242\234\350\211\262.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/linux\345\217\230\351\207\217.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/linux\350\257\257\345\210\240\351\231\244\345\210\206\345\214\272\346\201\242\345\244\215\346\226\271\346\263\225.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/login shell.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/mount.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/swap\345\210\206\345\214\272.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\345\205\203\345\255\227\347\254\246.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\345\206\205\345\255\230\351\207\212\346\224\276\346\241\210\344\276\213.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\345\207\275\346\225\260.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\345\217\230\351\207\217.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\345\256\232\346\227\266\344\273\273\345\212\2411.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\345\256\236\346\210\230\351\241\271\347\233\2561.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\345\256\236\346\210\230\351\241\271\347\233\2562.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\346\225\260\347\273\204.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\346\226\207\344\273\266\347\263\273\347\273\237\346\240\274\345\274\217\345\214\226.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\346\226\207\346\234\254\347\274\226\350\276\221\345\267\245\345\205\267.docx"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\347\211\251\347\220\206\347\243\201\347\233\230\345\255\230\345\202\250\345\216\237\347\220\206.md"
+	删除：     "\345\276\205\346\225\264\347\220\206\347\237\245\350\257\206\347\202\271/\347\264\242\345\274\225inode\345\217\212block.md"
 
 未跟踪的文件:
   （使用 "git add <文件>..." 以包含要提交的内容）
-	nesux.pdf
-
-修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
-[master 2878142] chenyantao@cyt
- 3 files changed, 137 insertions(+), 858 deletions(-)
- delete mode 100644 index.html
- rename nexus/nesux.pdf => nesux.pdf (100%)
-###########2021-06-25-19:18:06#############
-位于分支 master
-您的分支领先 'origin/master' 共 2 个提交。
-  （使用 "git push" 来发布您的本地提交）
-
-尚未暂存以备提交的变更：
-  （使用 "git add/rm <文件>..." 更新要提交的内容）
-  （使用 "git restore <文件>..." 丢弃工作区的改动）
-	删除：     github.md
-	删除：     nesux.md
-	删除：     nesux.pdf
-	修改：     push.log
-
-未跟踪的文件:
-  （使用 "git add <文件>..." 以包含要提交的内容）
-	"\345\267\245\345\205\267\346\200\273\347\273\223/"
+	tmp/
 
 修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
