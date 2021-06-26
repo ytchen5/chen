@@ -7,5 +7,5 @@
 | # . shell.sh      | 不需要执行权限，在当前shell中执行                            |
 | # source shell.sh | 不需要执行权限，在当前shell中执行,通常修改系统配置文件时候选择这样方式执行使其立即生效 |
 | sh -n shell.sh    | 仅调试syntax error                                           |
-| sh -vx shell.sh   | 以调试的方式执行，查询整个执行过程                           |
+| sh -vx shell.sh   | 以调试的方式执行，查询整个执行                               |
 
