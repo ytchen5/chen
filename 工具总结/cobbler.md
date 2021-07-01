@@ -1,3 +1,5 @@
+
+
 ### 目录
 
 - PXE简介
@@ -767,3 +769,35 @@ oldboyedu
 ![](https://img-blog.csdnimg.cn/20190313143831792.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Fybm9sYW4=,size_16,color_FFFFFF,t_70)
 
 至此，WEB方式部署完成
+
+##### 5.3.2 方式二：命令行方式部署
+
+以上很多web界面操作也可以通过命令行方式执行，部署完成后打开web界面即可使用~
+
+###### 5.3.2.1 挂载镜像
+
+distro（发行版本）：可使用distro命令或者import导入发行版镜像
+Cobbler上，distro可以有多个；同一个distor之上可定义同个profile,每个profile使用不同的kicstart文件
+
+```
+# mkdir -p /mnt/CentOS/6.5
+# mount -o loop /root/CentOS-6.5-x86_64-bin-DVD1.iso /mnt/CentOS/6.5/
+# cobbler import --name=CentOS-6.5-x86_64 --path=/mnt/CentOS/6.5
+```
+
+###### 5.3.2.2 准备kickstart文件
+
+1、通过工具制作
+
+
+
+2、手动编写
+
+```
+
+vim /var/lib/cobbler/kickstarts/CentOS-7-x86_64.cfg  #保证和前面的系统名称相同
+
+
+
+```
+
