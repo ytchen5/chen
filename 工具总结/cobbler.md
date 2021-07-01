@@ -789,15 +789,168 @@ Cobbler上，distro可以有多个；同一个distor之上可定义同个profile
 
 1、通过工具制作
 
+```
+yum install system-config-kickstart --showduplicate  
+```
 
+```
+system-config-kickstart
+```
+
+![](https://img-blog.csdnimg.cn/20190313152018395.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Fybm9sYW4=,size_16,color_FFFFFF,t_70)
+
+![](https://img-blog.csdnimg.cn/20190313152038326.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Fybm9sYW4=,size_16,color_FFFFFF,t_70)
+
+![](https://img-blog.csdnimg.cn/20190313152126144.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Fybm9sYW4=,size_16,color_FFFFFF,t_70)
+
+
+
+![](https://img-blog.csdnimg.cn/20190313152137316.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Fybm9sYW4=,size_16,color_FFFFFF,t_70)
+
+![](https://img-blog.csdnimg.cn/20190313152150868.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Fybm9sYW4=,size_16,color_FFFFFF,t_70)
+
+![](https://img-blog.csdnimg.cn/20190313152203380.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Fybm9sYW4=,size_16,color_FFFFFF,t_70)
+
+在所有选项设置完成后，点击左上角的“文件”选项就可生成一个文件。将该文件移动到已共享出去的目录里，供他人读取。或者直接拷贝到Cobbler web界面中。
 
 2、手动编写
 
 ```
-
 vim /var/lib/cobbler/kickstarts/CentOS-7-x86_64.cfg  #保证和前面的系统名称相同
+```
 
+可以复制/root目录下的anaconda-ks.cfg文件加以修改，找一台安装按照你的需求安装好的机器。 
 
+```
+[ root@vinsent html ]#cp /root/anaconda-ks.cfg ksdir/ks7.cfg
+[ root@vinsent html ]#vim ksdir/ks7.cfg
+....
+[ root@vinsent html ]#chmod +r ksdir/ks7.cfg    # "这里的文件需要加读权限，非常重要"
+[ root@vinsent html ]#cat ksdir/ks7.cfg         # centos 7的kickstart文件
+```
 
+这是自己手动修改，也可以从网上复制模板看实际情况自己修改后直接拿来用，下面附上CentOS 7和CentOS 6的版本供参考
+
+##### CentOS-7-x86_64.cfg参考模板
+
+```
+#CentOS7的ks文件 CentOS-7-x86_64.cfg
+# Cobbler for Kickstart Configurator for CentOS 7 by yao zhang
+install
+url --url=$tree
+text
+lang en_US.UTF-8
+keyboard us
+zerombr
+bootloader --location=mbr --driveorder=sda --append="crashkernel=auto rhgb quiet"
+#Network information
+$SNIPPET('network_config')
+#network --bootproto=dhcp --device=eth0 --onboot=yes --noipv6 --hostname=CentOS7
+timezone --utc Asia/Shanghai
+authconfig --enableshadow --passalgo=sha512
+rootpw  --iscrypted $default_password_crypted
+clearpart --all --initlabel
+part /boot --fstype xfs --size 1024
+part swap --size 1024
+part / --fstype xfs --size 1 --grow
+firstboot --disable
+selinux --disabled
+firewall --disabled
+logging --level=info
+reboot
+%pre
+$SNIPPET('log_ks_pre')
+$SNIPPET('kickstart_start')
+$SNIPPET('pre_install_network_config')
+# Enable installation monitoring
+$SNIPPET('pre_anamon')
+%end
+%packages
+@^minimal
+@compat-libraries
+@core
+@debugging
+@development
+bash-completion
+chrony
+dos2unix
+kexec-tools
+lrzsz
+nmap
+sysstat
+telnet
+tree
+vim
+wget
+%end
+%post
+systemctl disable postfix.service
+%end
+```
+
+##### CentOS-6.8-x86_64.cfg参考模板
+
+```
+# Cobbler for Kickstart Configurator for CentOS 6.8 by yao zhang
+install
+url --url=$tree
+text
+lang en_US.UTF-8
+keyboard us
+zerombr
+bootloader --location=mbr --driveorder=sda --append="crashkernel=auto rhgb quiet"
+$SNIPPET('network_config')
+timezone --utc Asia/Shanghai
+authconfig --enableshadow --passalgo=sha512
+rootpw  --iscrypted $default_password_crypted
+clearpart --all --initlabel
+part /boot --fstype=ext4 --asprimary --size=200
+part swap --size=1024
+part / --fstype=ext4 --grow --asprimary --size=200
+firstboot --disable
+selinux --disabled
+firewall --disabled
+logging --level=info
+reboot
+%pre
+$SNIPPET('log_ks_pre')
+$SNIPPET('kickstart_start')
+$SNIPPET('pre_install_network_config')
+# Enable installation monitoring
+$SNIPPET('pre_anamon')
+%end
+%packages
+@base
+@compat-libraries
+@debugging
+@development
+tree
+nmap
+sysstat
+lrzsz
+dos2unix
+telnet
+%end
+%post --nochroot
+$SNIPPET('log_ks_post_nochroot')
+%end
+%post
+$SNIPPET('log_ks_post')
+# Start yum configuration
+$yum_config_stanza
+# End yum configuration
+$SNIPPET('post_install_kernel_options')
+$SNIPPET('post_install_network_config')
+$SNIPPET('func_register_if_enabled')
+$SNIPPET('download_config_files')
+$SNIPPET('koan_environment')
+$SNIPPET('RedHat_register')
+$SNIPPET('cobbler_register')
+# Enable post-install boot notification
+$SNIPPET('post_anamon')
+# Start final steps
+$SNIPPET('kickstart_done')
+# End final steps
+%end
 ```
 
