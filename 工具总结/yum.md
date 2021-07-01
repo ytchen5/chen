@@ -112,7 +112,51 @@ tcpdump.x86_64 : A network traffic monitoring tool
 
 ```
 
-4 使用yum查询适合自己系统的软件包并且安装
+***4 使用yum查询适合自己系统的软件包并且安装***
 
+```
+[root@vm1 home]# yum install system-config-kickstart --showduplicates
+```
 
+***5 使用yum设置在本地缓存软件包***
+
+```
+[root@vm1 home]# sed -i '/^keep*./s/keepcache=0/keepcache=1/' /etc/yum.conf 
+[root@vm1 home]# sed -n '/^keep*./p' /etc/yum.conf 
+keepcache=1
+```
+
+***6 使用yum分析软件包的依赖关系***
+
+```
+[root@vm1 home]# yum deplist tcpdump
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+package: tcpdump.x86_64 14:4.9.2-4.el7_7.1
+  dependency: /bin/sh
+   provider: bash.x86_64 4.2.46-34.el7
+  dependency: /usr/bin/getent
+   provider: glibc-common.x86_64 2.17-317.el7
+  dependency: libc.so.6(GLIBC_2.14)(64bit)
+   provider: glibc.x86_64 2.17-317.el7
+  dependency: libcap-ng.so.0()(64bit)
+   provider: libcap-ng.x86_64 0.7.5-4.el7
+  dependency: libcrypto.so.10()(64bit)
+   provider: openssl-libs.x86_64 1:1.0.2k-19.el7
+  dependency: libcrypto.so.10(OPENSSL_1.0.2)(64bit)
+   provider: openssl-libs.x86_64 1:1.0.2k-19.el7
+  dependency: libcrypto.so.10(libcrypto.so.10)(64bit)
+   provider: openssl-libs.x86_64 1:1.0.2k-19.el7
+  dependency: libpcap >= 14:1.5.3-10
+   provider: libpcap.x86_64 14:1.5.3-12.el7
+   provider: libpcap.i686 14:1.5.3-12.el7
+  dependency: libpcap.so.1()(64bit)
+   provider: libpcap.x86_64 14:1.5.3-12.el7
+  dependency: rtld(GNU_HASH)
+   provider: glibc.x86_64 2.17-317.el7
+   provider: glibc.i686 2.17-317.el7
+  dependency: shadow-utils
+   provider: shadow-utils.x86_64 2:4.6-5.el7
+
+```
 
