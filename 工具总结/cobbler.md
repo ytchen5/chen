@@ -695,7 +695,7 @@ PS：内网网卡不要设置网关，否则会导致无法上网
 [root@cobbler-node pxelinux.cfg]# cp default default.bak
 [root@cobbler-node pxelinux.cfg]# cat default
 DEFAULT menu
-PROMPT 0
+PROMPT 0		
 MENU TITLE Cobbler | http://cobbler.github.io/
 TIMEOUT 200
 TOTALTIMEOUT 6000
@@ -713,6 +713,17 @@ LABEL centos7.2-Minimal-x86_64
         ipappend 2
  
 MENU end
+
+
+注释：
+DEFAULT menu 
+#指定默认引导入口名称（假如指定的是menu,他会一直在menu的界面等待，除非用户敲了回车，才回去安装，否则一直在等待）
+
+PROMPT 0 
+#是否等待用户选择（1表示等待 0表示不等待）
+
+LABEL CentOS7.9_2009-x86_64 
+#启动项
 
 ```
 
@@ -957,4 +968,6 @@ $SNIPPET('kickstart_done')
 # End final steps
 %end
 ```
+
+##### 5.4、登录客户端使用koan自动重装系统
 
