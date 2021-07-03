@@ -613,6 +613,8 @@ root      25268  25267 11 17:30 ?        00:00:05 rsync -a /mnt/ /var/www/cobble
 
 ```
 
+
+
 ```
 我们也可以在web界面的events菜单下查看具体日志，可以发现有running进程
 
@@ -792,6 +794,8 @@ Cobbler上，distro可以有多个；同一个distor之上可定义同个profile
 ```
 yum install system-config-kickstart --showduplicate  
 ```
+
+
 
 ```
 system-config-kickstart
