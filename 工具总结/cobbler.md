@@ -1101,7 +1101,7 @@ Loading mirror speeds from cached hostfile
 ...
 ```
 
-5.4.3、在客户端上面使用 koan重新安装系统
+###### 5.4.3、在客户端上面使用 koan重新安装系统
 
 koan是kickstart-over-a-network的缩写，它是cobbler的客户端帮助程序，koan允许你通过网络提供虚拟机，也允许你重装已经存在的客户端。当运行时，koan会从远端的cobbler server获取安装信息，然后根据获取的安装信息进行安装。
 
@@ -1122,10 +1122,6 @@ koan --server=cobbler.example.org --list=profiles
 koan --server=cobbler.example.org --list=systems
 
 koan --server=cobbler.example.org --list=images
-
-
-
-
 
 ```
 
