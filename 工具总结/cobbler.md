@@ -1034,5 +1034,122 @@ cobbler distro remove --name centos7.2-x86_64
 
 ##### 5.4、登录客户端使用koan自动重装系统
 
-5.4.1 
+###### 5.4.1 安装yum配置，我这里使用nexus私服机器代理yum源
+
+```
+1 从和你相连接的yum私服拷贝repo文件到本地
+[root@localhost ~]# scp root@192.168.100.155:/etc/yum.repos.d/nexus.repo /etc/yum.repos.d/ 
+nexus.repo                                                                                                                       100%  936    64.0KB/s   00:00    
+2 查看文件及文件内容
+[root@localhost ~]# ll /etc/yum.repos.d/nexus.repo 
+-rw-r--r-- 1 root root 936 7月   4 13:11 /etc/yum.repos.d/nexus.repo
+[root@localhost ~]# cat /etc/yum.repos.d/nexus.repo 
+[base]
+name=CentOS-$releasever - Base - mirrors.aliyun.com
+enabled=1
+baseurl=http://192.168.10.2:8081/repository/yum-group-my/$releasever/os/$basearch/
+gpgcheck=0
+[epel]
+name=epel
+baseurl=http://192.168.10.2:8081/repository/yum-group-my/7/$basearch
+enabled=1
+gpgcheck=0
+
+[epel-debuginfo]
+name=epel-debuginfo
+baseurl=http://192.168.10.2:8081/repository/yum-group-my/7/$basearch/debug
+enabled=0
+gpgcheck=0
+
+[epel-source]
+name=epel-source
+baseurl=http://192.168.10.2:8081/repository/yum-group-my/7/SRPMS
+enabled=0
+gpgcheck=0
+3 查看本地yum的仓库
+[root@localhost ~]# yum repolist
+已加载插件：fastestmirror
+Loading mirror speeds from cached hostfile
+源标识                                                             源名称                                                                                    状态
+base/7/x86_64                                                      CentOS-7 - Base - mirrors.aliyun.com                                                      10,072
+epel/x86_64                                                        epel                                                                                      13,612
+repolist: 23,684
+```
+
+###### 5.4.2、客户端上面安装koan插件
+
+```
+[root@localhost ~]# yum install koan --showduplicates -y
+已加载插件：fastestmirror
+Loading mirror speeds from cached hostfile
+正在解决依赖关系
+--> 正在检查事务
+---> 软件包 koan.noarch.0.2.8.5-0.3.el7 将被 安装
+--> 正在处理依赖关系 virt-install，它被软件包 koan-2.8.5-0.3.el7.noarch 需要
+--> 正在处理依赖关系 python2-simplejson，它被软件包 koan-2.8.5-0.3.el7.noarch 需要
+--> 正在处理依赖关系 python-ethtool，它被软件包 koan-2.8.5-0.3.el7.noarch 需要
+--> 正在检查事务
+---> 软件包 python-ethtool.x86_64.0.0.8-8.el7 将被 安装
+--> 正在处理依赖关系 libnl.so.1()(64bit)，它被软件包 python-ethtool-0.8-8.el7.x86_64 需要
+---> 软件包 python2-simplejson.x86_64.0.3.10.0-2.el7 将被 安装
+---> 软件包 virt-install.noarch.0.1.5.0-7.el7 将被 安装
+--> 正在处理依赖关系 virt-manager-common = 1.5.0-7.el7，它被软件包 virt-install-1.5.0-7.el7.noarch 需要
+--> 正在处理依赖关系 libvirt-client，它被软件包 virt-install-1.5.0-7.el7.noarch 需要
+--> 正在检查事务
+---> 软件包 libnl.x86_64.0.1.1.4-3.el7 将被 安装
+---> 软件包 libvirt-client.x86_64.0.4.5.0-36.el7 将被 安装
+...
+```
+
+5.4.3、在客户端上面使用 koan重新安装系统
+
+koan是kickstart-over-a-network的缩写，它是cobbler的客户端帮助程序，koan允许你通过网络提供虚拟机，也允许你重装已经存在的客户端。当运行时，koan会从远端的cobbler server获取安装信息，然后根据获取的安装信息进行安装。
+
+koan的用法如下：
+
+```
+koan --server=cobbler-server
+     [--list=type] [--virt|--replace-self|--display]
+     [--profile=name] [--system=name] [--image=name]
+     [--add-reinstall-entry] [--virt-name=name] [--virt-path=path]
+     [--virt-type=type] [--nogfx] [--static-interface=name] [--kexec]
+```
+
+显示cobbler server上的各种对象信息：
+
+koan --server=cobbler.example.org --list=profiles
+
+koan --server=cobbler.example.org --list=systems
+
+koan --server=cobbler.example.org --list=images
+
+
+
+
+
+```
+
+1 列出重新安装系统所需的ks文件
+[root@localhost ~]# koan --server=192.168.10.2 --list=profiles
+- looking for Cobbler at http://192.168.10.2:80/cobbler_api
+centos7-x86_64
+
+2 选择要重新安装系统
+[root@localhost ~]# koan --server=192.168.10.2 --replace-self --profile=centos7-x86_64
+- looking for Cobbler at http://192.168.10.2:80/cobbler_api
+- reading URL: http://192.168.10.2/cblr/svc/op/ks/profile/centos7-x86_64
+install_tree: http://192.168.10.2/cblr/links/centos7-x86_64
+downloading initrd initrd.img to /boot/initrd.img_koan
+url=http://192.168.10.2/cobbler/images/centos7-x86_64/initrd.img
+- reading URL: http://192.168.10.2/cobbler/images/centos7-x86_64/initrd.img
+downloading kernel vmlinuz to /boot/vmlinuz_koan
+url=http://192.168.10.2/cobbler/images/centos7-x86_64/vmlinuz
+- reading URL: http://192.168.10.2/cobbler/images/centos7-x86_64/vmlinuz
+- ['/sbin/grubby', '--add-kernel', '/boot/vmlinuz_koan', '--initrd', '/boot/initrd.img_koan', '--args', '"ks=http://192.168.10.2/cblr/svc/op/ks/profile/centos7-x86_64 ksdevice=link kssendmac lang= text "', '--copy-default', '--make-default', '--title=kick1625419998']
+- ['/sbin/grubby', '--update-kernel', '/boot/vmlinuz_koan', '--remove-args=root']
+- reboot to apply changes
+3 重启客户端，之后就重新安装系统了
+[root@localhost ~]# reboot 
+
+```
 
