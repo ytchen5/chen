@@ -158,6 +158,17 @@ cobbler reposync 同步yum仓库
 cobbler distro 查看导入的发行版系统信息
 cobbler system 查看添加的系统信息
 cobbler profile查看配置信息
+
+cobbler distro list 显示导入的镜像
+cobbler profile report 显示镜像报告(镜像配置信息)
+
+cobbler profile edit --name=CentOS7.9_2009-x86_64 --kickstart=/var/lib/cobbler/kickstarts/centos7.9-2009.cfg  为2个镜像指定ks文件
+
+cobbler profile edit --name=CentOS7.9_2009_jisuan-x86_64 --kickstart=/var/lib/cobbler/kickstarts/centos7.9-2009_jisuan.cfg  为2个镜像指定ks文件
+ 
+cobbler profile report  显示镜像报告(镜像配置信息)
+
+
 ```
 
 ## 四、服务选型及介绍
@@ -905,7 +916,7 @@ systemctl disable postfix.service
 
 ##### CentOS-6.8-x86_64.cfg参考模板
 
-```
+```shell
 # Cobbler for Kickstart Configurator for CentOS 6.8 by yao zhang
 install
 url --url=$tree
@@ -969,5 +980,59 @@ $SNIPPET('kickstart_done')
 %end
 ```
 
+通过如下方法指定某些镜像的ks文件
+
+```
+[root@vm1 tftpboot]# cobbler distro list
+   centos7-x86_64
+   
+[root@vm1 tftpboot]# cobbler profile edit --name=centos7-x86_64 --kickstart=/var/lib/cobbler/kickstarts/centos7-x86_64.ks
+
+[root@vm1 tftpboot]# cobbler profile report
+Name                           : centos7-x86_64
+TFTP Boot Files                : {}
+Comment                        : 
+DHCP Tag                       : default
+Distribution                   : centos7-x86_64
+Enable gPXE?                   : 0
+Enable PXE Menu?               : 1
+Fetchable Files                : {}
+Kernel Options                 : {}
+Kernel Options (Post Install)  : {}
+Kickstart                      : /var/lib/cobbler/kickstarts/centos7-x86_64.ks
+Kickstart Metadata             : {}
+Management Classes             : []
+Management Parameters          : <<inherit>>
+Name Servers                   : []
+Name Servers Search Path       : []
+Owners                         : ['admin']
+Parent Profile                 : 
+Internal proxy                 : 
+Red Hat Management Key         : <<inherit>>
+Red Hat Management Server      : <<inherit>>
+Repos                          : []
+Server Override                : <<inherit>>
+Template Files                 : {}
+Virt Auto Boot                 : 1
+Virt Bridge                    : xenbr0
+Virt CPUs                      : 1
+Virt Disk Driver Type          : raw
+Virt File Size(GB)             : 5
+Virt Path                      : 
+Virt RAM (MB)                  : 512
+Virt Type                      : kvm
+
+# 扩展命令
+# 删除镜像配置信息
+cobbler profile remove --name centos7.2-x86_64
+ 
+# 删除镜像[需要先删除镜像配置信息]
+cobbler distro remove --name centos7.2-x86_64
+```
+
+
+
 ##### 5.4、登录客户端使用koan自动重装系统
+
+5.4.1 
 
