@@ -182,10 +182,21 @@ DHCP就是动态主机设置协议，主要是为客户端分发IP，并且是�
 那么我们就可以打开DHCP的配置文件/etc/dhcp/dhcpd.conf做如下配置：
 
 ```
-subnet 192.168.14.0 netmask 255.255.255.0 {
-        range 192.168.25.50 192.168.25.100;
-        next-server 192.168.25.107;     # 指明tftp服务器的地址
-        filename "pxelinux.0";          # 指定PXE文件
+option domain-name "example.org";
+option domain-name-servers ns1.example.org, ns2.example.org;
+default-lease-time 600;
+max-lease-time 7200;
+log-facility local7;
+subnet 10.5.5.0 netmask 255.255.255.224 {
+  range 10.5.5.26 10.5.5.30;
+  option domain-name-servers ns1.internal.example.org;
+  option domain-name "internal.example.org";
+  option routers 10.5.5.1;
+  option broadcast-address 10.5.5.31;
+  default-lease-time 600;
+  max-lease-time 7200;
+  next-server 192.168.25.107;
+  filename "pxelinux.0";
 }
 ```
 
