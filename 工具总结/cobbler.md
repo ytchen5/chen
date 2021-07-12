@@ -530,32 +530,18 @@ yum install cobbler cobbler-web pykickstart httpd dhcp tftp xinetd --showduplica
  
 
 ```
-vim /etc/cobbler/dhcp.template
+option domain-name "192.168.10.2";
+option domain-name-servers 192.168.10.2;
+default-lease-time 600;
+max-lease-time 7200;
+log-facility local7;
 subnet 192.168.10.0 netmask 255.255.255.0 {
-     option routers             192.168.10.2;
-     option domain-name-servers 192.168.10.2;
-     option subnet-mask         255.255.255.0;
-     range dynamic-bootp        192.168.10.100 192.168.10.254;
-     default-lease-time         21600;
-     max-lease-time             43200;
-     next-server                $next_server;
-     class "pxeclients" {
-          match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
-          if option pxe-system-type = 00:02 {
-                  filename "ia64/elilo.efi";
-          } else if option pxe-system-type = 00:06 {
-                  filename "grub/grub-x86.efi";
-          } else if option pxe-system-type = 00:07 {
-                  filename "grub/grub-x86_64.efi";
-          } else if option pxe-system-type = 00:09 {
-                  filename "grub/grub-x86_64.efi";
-          } else {
-                  filename "pxelinux.0";
-          }
-     }
-
+  range 192.168.10.100 192.168.10.200;
+  option domain-name-servers 192.168.10.2;
+  option domain-name "192.168.10.2";
+  option routers 0.0.0.0;
+  option broadcast-address 192.168.10.255;
 }
-....
 ```
 
 完了再重启下服务并检查端口、同步数据：
