@@ -525,6 +525,77 @@ yum install cobbler cobbler-web pykickstart httpd dhcp tftp xinetd --showduplica
   cobbler sync
   ```
 
+
+
+***cobbler sync 执行后报如下错，解决方法：***
+..
+dhcpd -t failed
+Exception occured: <class 'cobbler.cexceptions.CX'>
+Exception value: 'cobbler trigger failed: cobbler.modules.sync_post_restart_services'
+Exception Info:
+File "/usr/lib/python2.7/site-packages/cobbler/remote.py", line 82, in run
+  rc = self._run(self)
+ File "/usr/lib/python2.7/site-packages/cobbler/remote.py", line 181, in runner
+  return self.remote.api.sync(self.options.get("verbose",False),logger=self.logger)
+ File "/usr/lib/python2.7/site-packages/cobbler/api.py", line 763, in sync
+  return sync.run()
+ File "/usr/lib/python2.7/site-packages/cobbler/action_sync.py", line 144, in run
+  utils.run_triggers(self.api, None, "/var/lib/cobbler/triggers/sync/post/*", logger=self.logger)
+ File "/usr/lib/python2.7/site-packages/cobbler/utils.py", line 928, in run_triggers
+  raise CX("cobbler trigger failed: %s" % m.__name__)
+
+```
+求助Google
+
+发现竟然是cobbler的Python源码在CentOS7上面有点问题：
+
+cd /usr/lib/python2.7/site-packages/cobbler/modules
+
+cat -n sync_post_restart_services.py
+
+ 35                  dhcp_restart_command = "service %s restart" % dhcp_service_name
+
+发现第35行，重启dhcp的命令还是使用的CentOS6的
+
+拷贝出去，修改代码：
+
+cp sync_post_restart_services.py /tmp/
+
+然后备份老的代码：
+
+mv sync_post_restart_services.py{,.ori}
+
+mv sync_post_restart_services.pyc{,.ori}
+
+mv sync_post_restart_services.pyo{,.ori}
+
+然后对拷贝的文件进行修改：
+
+cd /tmp/
+
+vim sync_post_restart_services.py
+
+把 35 行：dhcp_restart_command = "service %s restart" % dhcp_service_name
+
+修改为：dhcp_restart_command = "/usr/bin/systemctl restart %s " % dhcp_service_name
+
+然后编译Python文件
+
+python -m compileall  sync_post_restart_services.py
+
+python -O -m compileall  sync_post_restart_services.py
+
+把编译后的文件拷贝回原目录：
+
+cp sync_post_restart_services.py*  /usr/lib/python2.7/site-packages/cobbler/modules/
+
+最后重启：cobbler
+
+systemctl  restart  cobbler
+```
+
+
+
 ######       5.2.6 配置DHCP
 
  
