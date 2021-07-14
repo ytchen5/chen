@@ -929,7 +929,7 @@ vim /var/lib/cobbler/kickstarts/CentOS-7-x86_64.cfg  #保证和前面的系统�
 
 ```
 #CentOS7的ks文件 CentOS-7-x86_64.cfg
-# Cobbler for Kickstart Configurator for CentOS 7 by yao zhang
+# Cobbler for Kickstart Configurator for CentOS 7 by ytchen5
 install
 url --url=$tree
 text
