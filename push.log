@@ -18640,3 +18640,36 @@
 	修改：     push.log
 
 修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+[master 5e49832] chenyantao@cyt
+ 1 file changed, 13 insertions(+)
+###########2021-07-14-20:50:07#############
+位于分支 master
+您的分支领先 'origin/master' 共 4 个提交。
+  （使用 "git push" 来发布您的本地提交）
+
+尚未暂存以备提交的变更：
+  （使用 "git add <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+	修改：     push.log
+
+修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+位于分支 master
+您的分支领先 'origin/master' 共 4 个提交。
+  （使用 "git push" 来发布您的本地提交）
+
+尚未暂存以备提交的变更：
+  （使用 "git add <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+	修改：     push.log
+
+修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+###########2021-07-14-20:51:07#############
+位于分支 master
+您的分支与上游分支 'origin/master' 一致。
+
+尚未暂存以备提交的变更：
+  （使用 "git add <文件>..." 更新要提交的内容）
+  （使用 "git restore <文件>..." 丢弃工作区的改动）
+	修改：     push.log
+
+修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
