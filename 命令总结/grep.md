@@ -1,24 +1,59 @@
 # grep
-\### grep 应用实例
+grep是行过滤工具，用于根据关键字进行过滤
 
 grep 家族  
 grep 在文本中全局查找制定的正则表达式, 并打印包含该正则表达式的行  
 egrep 扩展的grep, 支持更多的正则表达式元字符  
-fgrep  固定的grep(fixed grep),有时候也被称作快速(fast grep),它按照字面解释所有字符  
-一. grep命名格式  
-grep \[选项\] PATTERN filename filename  
-\# grep 'Tom' /etc/passwd  
-\# grep "bash shell" /etc/test  
-找到: grep 返回退出状态为0  
-没找到: grep返回退出状态为1  
-找不到指定文件: grep返回退出状态为2  
+fgrep  固定的grep(fixed grep),有时候也被称作快速(fast grep),它按照字面解释所有字符  
+
+语法和选项：
+
+**语法：**
+
+```
+grep [选项] '关键字'	文件名
+```
+
+***常见选项：***
+
+```
+OPTIONS
+-i	不区分大小写
+-v	查找不包含指定内容的行，反向选择
+-w	按单词搜索
+-o	打印匹配关键字
+-c	统计匹配到的次数
+-n	显示行号
+-r	逐层遍历目录查找
+-A	显示匹配到的行及后面多少行
+-B	显示匹配到的行及前面多少行
+-C	显示匹配到的行及前后多少行
+-l	列出匹配的文件名
+-L	列出不匹配的文件名
+-e	使用正则表达式
+-E	使用扩展正则表达式
+-q --quiet,--silent 静默 --quiet --silent  
+^key	以关键字开头
+key$	以关键字结尾
+^$		匹配空行
+--color=auto	可以将找到的关键字加上颜色显示
+```
+
+***grep 返回状态码***
+
+找到: 	grep 返回退出状态为0  
+没找到:	grep返回退出状态为1  
+找不到指定文件:	grep返回退出状态为2  
 grep 程序的输入可以来自标准输入或者 管道, 而不仅是文件, 例如:
 
-二. grep使用的元字符
+***grep使用的基本元字符*** 
 
-grep  
  使用基本元字符 ^ $ . \* \[\] \[^\] \\< \\> \\(\\) \\{\\}  
+
+***grep使用的扩展元字符*** 
+
  使用扩展元字符 \\+ \\|  
+
 egrep(或grep -E)  
  使用扩展元字符 ? + {} | ()  
 \\w   所有字母与数字  称为字符 \[a-zA-Z0-9\]  l\[a-zA-Z9-0\]\*ve  等价于 l\\w\*ve  
@@ -36,17 +71,3 @@ egrep '5\\..' datafile
 egrep '\\.5' datafile  
 egrep '^\[we\]' datafile  
 egrep '^n\\w\*\\W' datafile   
-grep 选项  
-\-i --ignore-case 忽略大小写  
-\-l --files-which-matches 只列出匹配行的所在的文件名  
-\-n --line-number 在每一行前面加上它在文件中所在的行号  
-\-c --count   显示成功匹配的行数  
-\-s --no-messages 禁止显示文件不存在或文件不可读等错误信息  
-\-q --quiet,--silent 静默 --quiet --silent  
-\-v --invert-match 反向查找 只显示不匹配的行  
-\-R -r --recursive 递归针对目录  
-\--color    颜色  
-\-o --only-matching 只显示匹配的内容  
-\-B --before-context=NUM Print NUM lines of leading context   
-\-A --after-context=NUM rint NUM lines of trailing context after matching lines  
-\-C --context=NUM Print NUM lines of output context
