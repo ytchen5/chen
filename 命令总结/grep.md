@@ -71,3 +71,24 @@ egrep '5\\..' datafile
 egrep '\\.5' datafile  
 egrep '^\[we\]' datafile  
 egrep '^n\\w\*\\W' datafile   
+
+***过滤配置文件的注释行和空行***
+
+```
+[root@vm1 ~]# egrep -v '(^#|^$)' /etc/vsftpd/vsftpd.conf  #过滤掉注释行和空行
+anonymous_enable=YES
+local_enable=YES
+write_enable=YES
+local_umask=022
+dirmessage_enable=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+xferlog_std_format=YES
+listen=NO
+listen_ipv6=YES
+pam_service_name=vsftpd
+userlist_enable=YES
+tcp_wrappers=YES
+
+```
+
