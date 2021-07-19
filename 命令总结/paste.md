@@ -38,3 +38,26 @@ ytchen5 zhao:99999:000  # 第二个文件
 
 ```
 
+***扩展小技巧***
+
+有时候我们需要将含有多行的一个文件内容处理后付给一个数组变量然后循环遍历使用
+
+```
+[root@vm1 scripts]# cat passwd.tmp 
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+[root@vm1 scripts]# users=(`paste -s -d" " passwd.tmp`) 
+
+使用for循环遍历处理数组的值，做其他处理
+[root@vm1 scripts]# for i in `seq 0 $((${#users[*]} - 1))`;do echo ${users[i]};done
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+[root@vm1 scripts]# 
+```
+
