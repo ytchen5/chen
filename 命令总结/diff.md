@@ -148,7 +148,7 @@ Only in dir2: test3
 
 ```
 1)先找出文件的不同并保存在一个文件里面
-diff -uN ./dir1/file1 ./dir2/file2 >./file.patch
+diff -uN ./dir1/file1 ./dir2/file2 >./file.patch   # 谁在后面就以谁为标准
 -u 上下文格式显示
 -N	将不同的文件当做空文件
 
