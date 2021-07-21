@@ -177,16 +177,20 @@ abcd
 abcdabcdabcd
 ```
 
-8、过滤出本机的ip地址
+8、过滤出本机的ip地址,子网掩码，广播地址，MAC地址
 
 ```
 [root@vm1 scripts]# ifconfig eth0| grep -w inet | tr -s '[:blank:]' | cut -d" " -f2,3
 inet 192.168.100.155
+
 [root@vm1 scripts]# ifconfig eth0| grep -w inet | tr -s '[:blank:]' | cut -d" " -f4,5
 netmask 255.255.255.0
+
 [root@vm1 scripts]# ifconfig eth0| grep -w inet | tr -s '[:blank:]' | cut -d" " -f6,7
 broadcast 192.168.100.255
-[root@vm1 scripts]# 
+
+[root@vm1 scripts]# ifconfig eth0 | grep -w "ether" | tr -s '[:blank:]' | cut -d" " -f3
+52:54:00:80:c7:9a
 ```
 
 
