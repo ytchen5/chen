@@ -175,7 +175,6 @@ mail:x:8:12:mail:/var/spol/mail:/sbin/nologin
 operator:x:11:0:operator:/rot:/sbin/nologin
 abcd
 abcdabcdabcd
-
 ```
 
 
