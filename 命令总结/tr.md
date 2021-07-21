@@ -193,5 +193,56 @@ broadcast 192.168.100.255
 52:54:00:80:c7:9a
 ```
 
+9、将系统中所有普通用户的用户名和密码和默认shell保存到一个文件中，要求用户名，密码，默认shell之间用tab相隔
 
+```
+[root@vm1 scripts]# cat /etc/passwd | awk -F: '{if($3>=1000){print $0}}' | cut -d: -f1,2,7| tr ':' '\tab' >>username.txt
+[root@vm1 scripts]# cat username.txt 
+chenyantao	x	/bin/bash
+alice	x	/bin/bash
+tom	x	/bin/bash
+CHEN	x	/bin/bash
+ZHAO	x	/bin/bash
+LIU	x	/bin/bash
+eof	x	/bin/bash
+public	x	/bin/bash
+nexus	x	/bin/bash
+chenchen1	x	/bin/bash
+chenchen2	x	/bin/bash
+chenchen3	x	/bin/bash
+chenchen4	x	/bin/bash
+chenchen5	x	/bin/bash
+zhaozhao1	x	/bin/bash
+zhaozhao2	x	/bin/bash
+zhaozhao3	x	/bin/bash
+zhaozhao4	x	/bin/bash
+zhaozhao5	x	/bin/bash
+```
+
+或者
+
+```
+[root@vm1 scripts]# cat /etc/passwd | awk -F: '{if($3>=1000){print $1"\t"$2"\t"$7}}' >1.txt
+[root@vm1 scripts]# cat 1.txt 
+chenyantao	x	/bin/bash
+alice	x	/bin/bash
+tom	x	/bin/bash
+CHEN	x	/bin/bash
+ZHAO	x	/bin/bash
+LIU	x	/bin/bash
+eof	x	/bin/bash
+public	x	/bin/bash
+nexus	x	/bin/bash
+chenchen1	x	/bin/bash
+chenchen2	x	/bin/bash
+chenchen3	x	/bin/bash
+chenchen4	x	/bin/bash
+chenchen5	x	/bin/bash
+zhaozhao1	x	/bin/bash
+zhaozhao2	x	/bin/bash
+zhaozhao3	x	/bin/bash
+zhaozhao4	x	/bin/bash
+zhaozhao5	x	/bin/bash
+
+```
 
