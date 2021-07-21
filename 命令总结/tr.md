@@ -196,6 +196,22 @@ broadcast 192.168.100.255
 9、将系统中所有普通用户的用户名和密码和默认shell保存到一个文件中，要求用户名，密码，默认shell之间用tab相隔
 
 ```
+uid 范围是 0-65535
+
+root ： 0
+
+系统用户 ：
+CentOS5, 6 : 1 ～ 499
+CentOS7 : 1 ～ 999
+
+普通用户：
+CentOS5,6 : 500 ～ 65535
+CentOS7 : 1000 ～ 65535
+```
+
+
+
+```
 [root@vm1 scripts]# cat /etc/passwd | awk -F: '{if($3>=1000){print $0}}' | cut -d: -f1,2,7| tr ':' '\tab' >>username.txt
 [root@vm1 scripts]# cat username.txt 
 chenyantao	x	/bin/bash
