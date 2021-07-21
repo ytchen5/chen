@@ -128,3 +128,57 @@ operator#x#11#0#operator##root##sbin#nologin
 [root@vm1 scripts]# tr '[:cntrl:]' ' ' < filename.txt
 ```
 
+
+
+6、删除这个文件中的所有的小写字母
+
+```
+[root@vm1 scripts]# tr -d '[:lower:]'  < filename.txt
+::0:0::/://
+::1:1::/://
+::2:2::/://
+::3:4:://://
+::4:7::///://
+::5:0::/://
+::6:0::/://
+::7:0::/://
+::8:12::///://
+::11:0::/://
+```
+
+7、将一个文件内部的连续的字母压缩成单个，慎用
+
+```
+[root@vm1 scripts]# cat filename.txt 
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+operator:x:11:0:operator:/root:/sbin/nologin
+aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbcccccccccccccccdddddddddddddd
+abcdabcdabcd
+[root@vm1 scripts]# tr -s '[:lower:]' <  filename.txt 
+rot:x:0:0:rot:/rot:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spol/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spol/mail:/sbin/nologin
+operator:x:11:0:operator:/rot:/sbin/nologin
+abcd
+abcdabcdabcd
+
+```
+
+
+
+
+
