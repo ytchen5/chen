@@ -177,7 +177,12 @@ abcd
 abcdabcdabcd
 ```
 
+8、过滤出本机的ip地址
 
+```
+[root@vm1 scripts]# ifconfig eth0| grep -w inet | tr -s '[:blank:]' | cut -d" " -f3
+192.168.100.155
+```
 
 
 
