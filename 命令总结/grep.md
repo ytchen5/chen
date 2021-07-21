@@ -89,6 +89,14 @@ listen_ipv6=YES
 pam_service_name=vsftpd
 userlist_enable=YES
 tcp_wrappers=YES
+```
 
+***过滤出本机网卡的ip地址，子网掩码和广播地址***
+
+```
+[root@vm1 scripts]# ifconfig eth0 | egrep -o [0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\} | grep -v :
+192.168.100.155
+255.255.255.0
+192.168.100.255
 ```
 
