@@ -23,6 +23,31 @@
 | {string1,string2,...} | 匹配string1 string2或更多的字符串                            |
 | {1..10}               | 匹配1-10之间的任意数字                                       |
 
+### bash中的引号（重点）
+
+- 双引号""	会把引号内部的内容当成整体看待
+
+- 单引号''      会把引号内部的内容当成整体看待，禁止引用其他变量值shell中的特殊字符都被视为普通字符
+
+- 反撇号``   返撇号和$()一样，引号或者括号里的命令会被优先执行，如果存在嵌套，返撇号不能用
+
+  
+
+```
+chenyantao@cyt:~$ echo "${HOSTNAME}"
+cyt
+chenyantao@cyt:~$ echo '${HOSTNAME}'
+${HOSTNAME}
+
+chenyantao@cyt:~$ echo `date +%F`
+2021-07-22
+chenyantao@cyt:~$ echo 'date +%F'
+date +%F
+chenyantao@cyt:~$ echo "date +%F"
+date +%F
+
+```
+
 
 
 ## 正则表达式（元字符）
