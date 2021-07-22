@@ -1,4 +1,4 @@
-# nesux
+## nexus
 
 nexus介绍
 
@@ -21,7 +21,7 @@ nexus提供了强大的仓库管理功能,构件搜索功能,它基于REST,友�
 8）可以建立公共仓库
 这些优点使得Nexus日趋成为最流行的Maven仓库管理器
 
-# CentOS7.x上用nexus搭建yum仓库
+## CentOS7.x上用nexus搭建yum仓库
 
 ## 一、实验背景
 
