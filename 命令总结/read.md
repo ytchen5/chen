@@ -41,6 +41,6 @@ mer
 [root@vm1 dir1]# 
 [root@vm1 dir1]# echo $name
 
-[root@vm1 dir1]# 
+[root@vm1 dir1]#  
 ```
 
