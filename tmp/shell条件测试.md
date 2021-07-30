@@ -103,7 +103,21 @@ chenyantao@cyt:~$ ((1==1));echo $?
 chenyantao@cyt:~$ 
 ```
 
+字符串比较
 
+```
+双引号引起来，看作成为一个整体，=或 == 在[字符串]比较中都表示判断
+chenyantao@cyt:~$ a="hello world";b="world"
+
+chenyantao@cyt:~$ [ "$a" = "$b" ];echo $?
+1
+chenyantao@cyt:~$ [ "$a" != "$b" ];echo $?
+0
+chenyantao@cyt:~$ a="world";b="world"
+chenyantao@cyt:~$ [ "$a" == "$b" ];echo $?
+0
+
+```
 
 
 
