@@ -84,6 +84,27 @@
 
 
 
+**（七）类C风格的数值比较**
+
+```
+注意 在(( )) 中，=代表赋值， == 代表判断
+chenyantao@cyt:~$ ((1>2));echo $?
+1
+chenyantao@cyt:~$ ((1==2));echo $?
+1
+chenyantao@cyt:~$ ((1<2));echo $?
+0
+chenyantao@cyt:~$ ((1<=2));echo $?
+0
+chenyantao@cyt:~$ ((1!=2));echo $?
+0
+chenyantao@cyt:~$ ((1==1));echo $?
+0
+chenyantao@cyt:~$ 
+```
+
+
+
 
 
 test -d /home	判断是否存在此目录
